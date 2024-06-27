@@ -94,7 +94,7 @@ void mainMenu()
 
         switch (choice) {
             case 1:
-                loadSched(&filename);
+                // loadSched(&filename);
                 break;
             case 2:
                 viewSched();
