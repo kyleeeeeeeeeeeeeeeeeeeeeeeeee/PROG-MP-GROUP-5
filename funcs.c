@@ -52,7 +52,7 @@ void searchTime(char *time)
 
 }
 
-void printTicket(int cinema_number, char *title, char *showTime, char *seatNum)
+void printTicket(int cinemaNum, char *title, char *showTime, char *seatNum)
 {
 
 }
