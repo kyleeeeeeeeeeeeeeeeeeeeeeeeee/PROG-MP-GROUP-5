@@ -9,11 +9,18 @@
 typedef char longstr[101];
 typedef char str[31];
 
+struct InputTag{
+    str title;
+    str time
+    str numSeats;
+    str seats[5][10];
+};
+
 struct MovieTag{
    int numCinema;
    str title;
    longstr description;
-   int runTime;
+   str runTime;
 };
 
 struct ViewMovieTag{
