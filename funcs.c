@@ -7,15 +7,17 @@
 #define MAX_SHOWINGS 6
 #define MAX_SEATS 50
 
-typedef struct {
-    char title[100];
-    char description[256];
-    int running_time; 
-    char show_times[MAX_SHOWINGS][10]; 
-    char seats[MAX_SHOWINGS][MAX_SEATS]; 
-} Movie;
+struct MovieTag{
+   int numCinema;
+   str title;
+   longstr description;
+   int runTime;
+};
 
-typedef Movie Cinema[MAX_CINEMAS];
+struct ViewMovieTag{
+    struct MovieTag Movie;
+    str showingTime;
+};
 
 void loadSched(char *filename)
 {
