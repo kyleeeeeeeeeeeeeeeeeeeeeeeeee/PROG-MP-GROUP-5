@@ -6,6 +6,8 @@
 #define MAX_CINEMAS 10
 #define MAX_SHOWINGS 6
 #define MAX_SEATS 50
+typedef char longstr[101];
+typedef char str[31];
 
 struct MovieTag{
    int numCinema;
