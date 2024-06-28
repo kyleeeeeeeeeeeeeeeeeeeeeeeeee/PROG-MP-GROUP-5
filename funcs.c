@@ -9,13 +9,6 @@
 typedef char longstr[101];
 typedef char str[31];
 
-struct InputTag{
-    str title;
-    str time
-    str numSeats;
-    str seats[5][10];
-};
-
 struct MovieTag{
    int numCinema;
    str title;
@@ -23,9 +16,13 @@ struct MovieTag{
    str runTime;
 };
 
-struct ViewMovieTag{
-    struct MovieTag Movie;
+struct showTag{
     str showingTime;
+    str seats[5][10];
+}
+struct ViewMovieTag{    //main tag: structure for showing movies (1 showing time = 1 cinema)
+    struct MovieTag Movie;
+    struct showTag show[15];
 };
 
 void loadSched(char *filename)
