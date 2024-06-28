@@ -20,6 +20,7 @@ struct MovieTag{
 struct showTag{
     str showingTime;
     str seats[5][10];
+   int seatsTaken;
 }
 struct ViewMovieTag{    // main tag: structure for showing movies (1 showing time = 1 cinema)
     struct MovieTag Movie;
