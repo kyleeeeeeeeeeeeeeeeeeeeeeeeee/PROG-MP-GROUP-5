@@ -38,21 +38,14 @@ void loadSched(char *filename)
         printf("Unable to open file: %s\n", filename);
         return;
     }
-    while (fscanf(fp, "%d\n", &cinemaIndex) != EOF) 
+    while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
     {
         if (cinemaIndex >= MAX_CINEMAS) 
         {
             printf("Cinema index %d out of bounds\n", cinemaIndex);
             fclose(fp);
             return;
-        }
-
-    while (!feof(fp)) 
-    {                
-        if (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
-        {
-            if (cinemaIndex < MAX_CINEMAS) 
-            {    
+        }    
                 // Read movie title, description, and runtime from file
                 fscanf(fp, "%30[^\n]\n", cinemas[cinemaIndex].Movie.title);
                 fscanf(fp, "%100[^\n]\n", cinemas[cinemaIndex].Movie.description);
@@ -73,14 +66,6 @@ void loadSched(char *filename)
                         }
                     }
                 }
-            } 
-            else 
-            {
-                printf("Cinema index %d out of bounds\n", cinemaIndex);
-                fclose(fp);
-                return;
-            }
-        }
     }
    fclose(fp);
 }
