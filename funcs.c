@@ -21,7 +21,7 @@ struct showTag{
     str showingTime;
     str seats[5][10];
    int seatsTaken;
-}
+};
 struct ViewMovieTag{    // main tag: structure for showing movies (1 showing time = 1 cinema)
     struct MovieTag Movie;
     struct showTag show[15];
@@ -85,7 +85,15 @@ void displaySeat(int cinemaNum, char *showTime)
 {
   
 }
-
+void displayTable(struct ViewMovieTag *view, int index, int index2){
+    int i, j, k=0;
+    for (i=0; i<5; i++){
+        for (j=0; j<10; j++){
+            printf("%s ", view[index].show[index2].seats[i][j]);
+        }
+        printf("\n\n");
+    }
+}
 void selectSeat(int cinemaNum, char *showTime)
 {
   
