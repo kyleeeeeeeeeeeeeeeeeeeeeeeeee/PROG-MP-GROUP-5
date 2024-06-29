@@ -94,10 +94,6 @@ void displayTable(struct ViewMovieTag *view, int index, int index2){
         printf("\n\n");
     }
 }
-void selectSeat(int cinemaNum, char *showTime)
-{
-  
-}
 
 void seatSelect(struct ViewMovieTag Main[]){
     int i, j, k=0;
