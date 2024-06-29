@@ -29,6 +29,67 @@ struct ViewMovieTag{    // main tag: structure for showing movies (1 showing tim
 
 struct ViewMovieTag cinemas[MAX_CINEMAS]; // Array of cinema schedules
 
+
+void initializeTable(int index, int index2){
+    //initialize of seats
+    int i, j, k=0;
+    for (i=0; i<5; i++){
+        for (j=0; j<10; j++){
+            switch (i) {
+            case 0:
+                strcpy(cinemas[index].show[index2].seats[i][j], "A");
+                break;
+            case 1:
+                strcpy(cinemas[index].show[index2].seats[i][j], "B");
+                break;
+            case 2:
+                strcpy(cinemas[index].show[index2].seats[i][j], "C");
+                break;
+            case 3:
+                strcpy(cinemas[index].show[index2].seats[i][j], "D");
+                break;
+            case 4:
+                strcpy(cinemas[index].show[index2].seats[i][j], "E");
+                break;
+            }
+
+            switch (j) {
+            case 0:
+                strcat(cinemas[index].show[index2].seats[i][j], "1");
+                break;
+            case 1:
+                strcat(cinemas[index].show[index2].seats[i][j], "2");
+                break;
+            case 2:
+                strcat(cinemas[index].show[index2].seats[i][j], "3");
+                break;
+            case 3:
+                strcat(cinemas[index].show[index2].seats[i][j], "4");
+                break;
+            case 4:
+                strcat(cinemas[index].show[index2].seats[i][j], "5");
+                break;
+            case 5:
+                strcat(cinemas[index].show[index2].seats[i][j], "6");
+                break;
+            case 6:
+                strcat(cinemas[index].show[index2].seats[i][j], "7");
+                break;
+            case 7:
+                strcat(cinemas[index].show[index2].seats[i][j], "8");
+                break;
+            case 8:
+                strcat(cinemas[index].show[index2].seats[i][j], "9");
+                break;
+            case 9:
+                strcat(cinemas[index].show[index2].seats[i][j], "10");
+                break;
+            }
+        }
+    }
+}
+
+
 void loadSched(char *filename)
 {
    int i, j, k, cinemaIndex = 0;
