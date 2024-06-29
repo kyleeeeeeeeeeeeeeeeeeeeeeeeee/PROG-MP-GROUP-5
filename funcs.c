@@ -185,7 +185,7 @@ void seatSelect(){
 
 }
 
-void loadSched(char *filename)
+void preloadSched(char *filename)
 {
    int i, j, k, cinemaIndex = 0;
    FILE *fp; 
