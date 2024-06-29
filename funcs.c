@@ -213,14 +213,8 @@ void loadSched(char *filename)
                 {
                     if (fscanf(fp, "%30[^\n]\n", cinemas[cinemaIndex].show[i].showingTime) == 1) 
                     {
-                        // Initialize seats to 'O' indicating available
-                        for (j = 0; j < 5; j++) 
-                        {
-                            for (k = 0; k < 10; k++) 
-                            {
-                                strcpy(cinemas[cinemaIndex].show[i].seats[j][k], "O");
-                            }
-                        }
+                        // Initialize seats
+                        initializeTable(cinemaIndex, i);
                     }
                 }
     }
