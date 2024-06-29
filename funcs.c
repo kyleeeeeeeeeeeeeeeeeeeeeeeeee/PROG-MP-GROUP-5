@@ -89,6 +89,101 @@ void initializeTable(int index, int index2){
     }
 }
 
+void displayTable(int index, int index2){
+    int i, j, k=0;
+    for (i=0; i<5; i++){
+        for (j=0; j<10; j++){
+            printf("%s ", cinemas[index].show[index2].seats[i][j]);
+        }
+        printf("\n\n");
+    }
+}
+
+void seatSelect(){
+    int i, j, k=0;
+
+    str title;
+    str showtime;
+    int numSeats;
+    str seats[3];
+
+    int titleValid =0;
+    int titleIndex;
+    int timeValid=0;
+    int timeIndex;
+    int validSeats=0;
+    int isValid=0;
+
+    while (titleValid != 1){
+        printf("Enter Movie Title: ");
+        scanf(" %[^\n]%*c", title);
+
+        for (i=0;i<6;i++){
+            if (strcmp(title, cinemas[i].Movie.title) == 0){
+                titleValid = 1;
+                titleIndex = i;
+            }
+        }
+    }
+
+    printf("Movie Title: %s\n", cinemas[titleIndex].Movie.title);
+    printf("Showing Times:\n");
+    for (j=0;j<3;j++){
+        printf("\n%s", cinemas[titleIndex].show[j].showingTime);
+    }
+    printf("\n");
+
+    do{
+        printf("Enter Showing Time: ");
+        scanf(" %[^\n]%*c", showtime);
+        for (i=0;i<3;i++){
+            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0){
+                if (cinemas[titleIndex].show[i].seatsTaken == 50){
+                    printf("Sorry, all seats are taken.\n");
+                }
+                else if (cinemas[titleIndex].show[i].seatsTaken < 50){
+                    timeValid = 1;
+                    timeIndex=i;
+                }
+            }
+        }
+    } while (timeValid != 1);
+
+    displayTable(titleIndex, timeIndex);
+
+    do{
+        printf("\nEnter Number of Seats: ");
+        scanf("%d", &numSeats);
+        
+    } while (!(numSeats > 0 && numSeats < 4));
+
+    do {
+        printf("\nEnter Seat[%d]: ", k+1);
+        scanf("%s", seats[k]);
+
+        for (i=0;i<5; i++){
+            for (j=0;j<10; j++){
+                if (strcmp(cinemas[titleIndex].show[timeIndex].seats[i][j], seats[k]) == 0){
+                    strcpy(cinemas[titleIndex].show[timeIndex].seats[i][j], "X");
+                    isValid=1;
+                    validSeats++;
+                    k++;
+                    cinemas[titleIndex].show[timeIndex].seatsTaken++;
+                }
+            }
+        }
+        if (isValid == 1){
+            isValid = 0;
+        }
+        else if (isValid == 0){
+            printf("\nSeat Taken! Please choose again");
+        }
+
+    } while (!(k==numSeats));
+
+    displayTable(titleIndex, timeIndex);
+
+}
 
 void loadSched(char *filename)
 {
