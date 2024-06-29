@@ -11,7 +11,7 @@ typedef char longstr[101];
 typedef char str[31];
 
 struct MovieTag{
-   int numCinema; // not yet implemented
+   int numCinema;
    str title;
    longstr description;
    str runTime;
