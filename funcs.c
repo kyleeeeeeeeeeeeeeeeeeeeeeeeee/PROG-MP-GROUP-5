@@ -116,7 +116,7 @@ void seatSelect(){
 
     while (titleValid != 1){
         printf("Enter Movie Title: ");
-        scanf(" %[^\n]%*c", title);
+        scanf(" %[^\n]s", title);
 
         for (i=0;i<6;i++){
             if (strcmp(title, cinemas[i].Movie.title) == 0){
@@ -135,7 +135,7 @@ void seatSelect(){
 
     do{
         printf("Enter Showing Time: ");
-        scanf(" %[^\n]%*c", showtime);
+        scanf(" %[^\n]s", showtime);
         for (i=0;i<3;i++){
             if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0){
                 if (cinemas[titleIndex].show[i].seatsTaken == 50){
