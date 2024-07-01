@@ -266,11 +266,6 @@ void searchTime(char *time)
 
 }
 
-void printTicket(int cinemaNum, char *title, char *showTime, char *seatNum)
-{
-
-}
-
 int checkAvailability(int cinemaNum, char *showTime, char *seatNum)
 {
 
