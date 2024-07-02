@@ -1,5 +1,5 @@
 int main()
 {
-  main menu();
+  mainMenu();
   return 0;
 }
