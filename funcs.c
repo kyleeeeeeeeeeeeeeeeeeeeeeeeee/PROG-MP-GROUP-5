@@ -288,7 +288,7 @@ void saveExit(char *filename)
 
 void viewSched()
 {
-   int i, j;
+   int i, j;  
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
       // check if cinema has a valid movie title
@@ -350,38 +350,65 @@ void searchTime(char *time)
 
 void mainMenu()
 {
- int choice, cinemaNum;
- char filename, showTime, title, time, seatNum;
-    do{
-        printf("1. Load Schedule\n");
+    int choice, cinemaNum;
+    char title[31], time[31], seatNum[5];
+    do 
+    {
+        printf("\n===== Main Menu =====\n");
+        printf("1. Preload Schedule\n");
         printf("2. View Schedule\n");
         printf("3. Select Seats\n");
         printf("4. Search Movie\n");
         printf("5. Print Ticket\n");
-        printf("6. Exit\n");
+        printf("6. Save and Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
-        switch (choice) {
+        getchar(); // Consume newline left by scanf
+        
+        switch (choice) 
+        {
             case 1:
-                // loadSched(&filename);
+                preloadSched("movieSched.txt"); 
+                printf("Schedule loaded successfully!\n");
                 break;
             case 2:
                 viewSched();
                 break;
             case 3:
-                selectSeat(cinemaNum, &showTime);
+                printf("Enter Cinema Number: ");
+                scanf("%d", &cinemaNum);
+                printf("Enter Show Time: ");
+                scanf(" %[^\n]s", time);
+                selectSeat(cinemaNum, time);
                 break;
             case 4:
-               searchTitle(&title);
-               searchTime(&time);
-               break;
-            case 5:
-                printTicket(cinemaNum, &title, &showTime, &seatNum);
+                printf("Enter Movie Title: ");
+                scanf(" %[^\n]s", title);
+                searchTitle(title);
+                printf("Enter Show Time: ");
+                scanf(" %[^\n]s", time);
+                searchTime(time);
                 break;
-            case 6:   
-                // Exit
-        } while(choice != 6);
+            case 5:
+                printf("Enter Cinema Number: ");
+                scanf("%d", &cinemaNum);
+                printf("Enter Movie Title: ");
+                scanf(" %[^\n]s", title);
+                printf("Enter Show Time: ");
+                scanf(" %[^\n]s", time);
+                printf("Enter Seat Number (ex: A1, B2): ");
+                scanf(" %[^\n]s", seatNum);
+                printTicket(cinemaNum, title, time, seatNum);
+                break;
+            case 6:
+                saveExit("movieSched.txt"); 
+                printf("Schedule saved successfully! Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice! Please enter a valid number.\n");
+                break;
+        }
+    } while (choice != 6);
 }
 
 
