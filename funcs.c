@@ -246,8 +246,44 @@ void preloadSched(char *filename)
 }
 
 void saveExit(char *filename)
-{
-  
+{  
+   int i, j, k, l;
+   FILE *fp = fopen(filename, "w");
+    if (fp == NULL) 
+    {
+        printf("Could not open file %s for writing.\n", filename);
+        return;
+    }
+    for (i = 0; i < MAX_CINEMAS; i++) 
+    {
+        if (strlen(cinemas[i].Movie.title) > 0) 
+        {
+            fprintf(fp, "Cinema No: %d\n", cinemas[i].Movie.numCinema);
+            fprintf(fp, "Title: %s\n", cinemas[i].Movie.title);
+            for (int j = 0; j < MAX_SHOWINGS; j++) 
+            {
+                if (strlen(cinemas[i].show[j].showingTime) > 0) 
+                {
+                    fprintf(fp, "Time: %s\n", cinemas[i].show[j].showingTime);
+                    fprintf(fp, "Taken Seats:\n");
+                    for (int k = 0; k < 5; k++) 
+                    {
+                        for (int l = 0; l < 10; l++) 
+                        {   
+                           // "X" label if seat is taken
+                           if (strcmp(cinemas[i].show[j].seats[k][l], "X") == 0) 
+                            { 
+                              // Seat identifier ex: A1, B2 
+                              fprintf(fp, "%c%d, ", 'A' + k, l + 1);
+                            }
+                        }
+                    }
+                    fprintf(fp, "\n\n"); // for formatting purposes
+                }
+            }
+        }
+    }
+    fclose(fp);
 }
 
 void viewSched()
