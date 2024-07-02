@@ -416,7 +416,7 @@ void mainMenu()
                scanf(" %[^\n]s", time);
                printf("Enter Seat Number (ex: A1, B2): ");
                scanf(" %[^\n]s", seatNum);
-               printTicket(cinemaNum, title, time, seatNum);
+               printTicket("Ticket.txt", title, time);
                break;
             case 6:
                saveExit("movieSched.txt"); 
