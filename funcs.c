@@ -32,7 +32,7 @@ struct ViewMovieTag cinemas[MAX_CINEMAS]; // Array of cinema schedules
 
 void initializeTable(int index, int index2){
     //initialize of seats
-    int i, j, k=0;
+    int i, j;
     for (i=0; i<5; i++){
         for (j=0; j<10; j++){
             switch (i) {
@@ -90,7 +90,7 @@ void initializeTable(int index, int index2){
 }
 
 void displayTable(int index, int index2){
-    int i, j, k=0;
+    int i, j;
     for (i=0; i<5; i++){
         for (j=0; j<10; j++){
             printf("%s ", cinemas[index].show[index2].seats[i][j]);
@@ -211,7 +211,7 @@ void seatSelect(){
 
 void preloadSched(char *filename)
 {
-   int i, j, k, cinemaIndex = 0;
+   int i, cinemaIndex = 0;
    FILE *fp; 
    fp = fopen(filename, "r");
     if (fp == NULL) 
