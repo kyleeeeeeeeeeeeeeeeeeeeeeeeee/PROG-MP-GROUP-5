@@ -1,0 +1,14 @@
+Cinema No: 1
+Movie Title: Avengers: Endgame
+Show Time: 12:30pm
+Seat Number: A3
+
+Cinema No: 1
+Movie Title: Avengers: Endgame
+Show Time: 12:30pm
+Seat Number: B5
+
+Cinema No: 1
+Movie Title: Avengers: Endgame
+Show Time: 12:30pm
+Seat Number: C7
