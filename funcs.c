@@ -288,28 +288,64 @@ void saveExit(char *filename)
 
 void viewSched()
 {
-  
+   int i, j;
+   for (i = 0; i < MAX_CINEMAS; i++) 
+   {
+      // check if cinema has a valid movie title
+      if (strlen(cinemas[i].Movie.title) > 0) 
+      {
+         printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+         for (j = 0; j < MAX_SHOWINGS; j++) 
+         {
+            // check if showing time is valid
+            if (strlen(cinemas[i].show[j].showingTime) > 0) 
+            {
+                  printf("  Show Time: %s\n", cinemas[i].show[j].showingTime);
+            }
+         }
+      }
+    }
 }
 
 
 void searchTitle(char *title)
 {
-  
+   int i, j;
+   for (i = 0; i < MAX_CINEMAS; i++) 
+   {
+      // check if cinema has valid movie title & matches the search title
+      if (strlen(cinemas[i].Movie.title) > 0 && strcmp(cinemas[i].Movie.title, title) == 0) 
+      {
+            printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+            for (j = 0; j < MAX_SHOWINGS; j++) 
+            {
+               // check if showing time is valid
+               if (strlen(cinemas[i].show[j].showingTime) > 0) 
+               {
+                  printf("  Show Time: %s\n", cinemas[i].show[j].showingTime);
+                  printf("  Available Seats: %d\n", MAX_SEATS - cinemas[i].show[j].seatsTaken);
+               }
+            }
+        }
+    }
 }
 
 void searchTime(char *time)
 {
-
-}
-
-int checkAvailability(int cinemaNum, char *showTime, char *seatNum)
-{
-
-}
-
-void markTaken(int cinemaNum, char *showTime, char *seatNum)
-{
-
+   int i, j;
+   for (i = 0; i < MAX_CINEMAS; i++) 
+   {
+        for (j = 0; j < MAX_SHOWINGS; j++) 
+        {
+            // check if showing time is valid & matches the search time
+            if (strlen(cinemas[i].show[j].showingTime) > 0 && strcmp(cinemas[i].show[j].showingTime, time) == 0) 
+            {
+                printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+                printf("  Show Time: %s\n", cinemas[i].show[j].showingTime);
+                printf("  Available Seats: %d\n", MAX_SEATS - cinemas[i].show[j].seatsTaken);
+            }
+        }
+    }
 }
 
 void mainMenu()
