@@ -235,13 +235,14 @@ void preloadSched(char *filename)
 {
    int i, cinemaIndex = 0;
    FILE *fp; 
-   fp = fopen(filename, "r");
+   fp = fopen(filename, "r"); // Open file for reading
     if (fp == NULL) 
     {
         printf("Unable to open file: %s\n", filename);
         return;
     }
-    while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
+   // Read cinema index and schedule details 
+   while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
     {
         if (cinemaIndex >= MAX_CINEMAS) 
         {
@@ -270,25 +271,31 @@ void preloadSched(char *filename)
 void saveExit(char *filename)
 {  
    int i, j, k, l;
-   FILE *fp = fopen(filename, "w");
+   FILE *fp = fopen(filename, "w"); // Open file for writing
     if (fp == NULL) 
     {
         printf("Could not open file %s for writing.\n", filename);
         return;
     }
-    for (i = 0; i < MAX_CINEMAS; i++) 
+   
+   // Iterate through each cinema
+   for (i = 0; i < MAX_CINEMAS; i++) 
     {
-        if (strlen(cinemas[i].Movie.title) > 0) 
+        if (strlen(cinemas[i].Movie.title) > 0) // Check if cinema has a valid movie title
         {
             fprintf(fp, "Cinema No: %d\n", cinemas[i].Movie.numCinema);
             fprintf(fp, "Title: %s\n", cinemas[i].Movie.title);
+           
+            // Iterate through each showing time
             for (j = 0; j < MAX_SHOWINGS; j++) 
             {
-                if (strlen(cinemas[i].show[j].showingTime) > 0) 
+                if (strlen(cinemas[i].show[j].showingTime) > 0) // Check if showing time is valid
                 {
                     fprintf(fp, "Time: %s\n", cinemas[i].show[j].showingTime);
                     fprintf(fp, "Taken Seats:\n");
-                    for (k = 0; k < 5; k++) 
+
+                  // Iterate through each seat 
+                  for (k = 0; k < 5; k++) 
                     {
                         for (l = 0; l < 10; l++) 
                         {   
@@ -311,12 +318,16 @@ void saveExit(char *filename)
 void viewSched()
 {
    int i, j;  
+   
+   // Iterate through each cinema
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
       // check if cinema has a valid movie title
       if (strlen(cinemas[i].Movie.title) > 0) 
       {
          printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+         
+         // Iterate through each showing time
          for (j = 0; j < MAX_SHOWINGS; j++) 
          {
             // check if showing time is valid
@@ -333,12 +344,16 @@ void viewSched()
 void searchTitle(char *title)
 {
    int i, j;
+
+   // Iterate through each cinema
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
       // check if cinema has valid movie title & matches the search title
       if (strlen(cinemas[i].Movie.title) > 0 && strcmp(cinemas[i].Movie.title, title) == 0) 
       {
             printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+         
+           // Iterate through each showing time
             for (j = 0; j < MAX_SHOWINGS; j++) 
             {
                // check if showing time is valid
@@ -355,9 +370,12 @@ void searchTitle(char *title)
 void searchTime(char *time)
 {
    int i, j;
+   
+   // Iterate through each cinema
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
-        for (j = 0; j < MAX_SHOWINGS; j++) 
+      // Iterate through each showing time  
+      for (j = 0; j < MAX_SHOWINGS; j++) 
         {
             // check if showing time is valid & matches the search time
             if (strlen(cinemas[i].show[j].showingTime) > 0 && strcmp(cinemas[i].show[j].showingTime, time) == 0) 
@@ -375,36 +393,37 @@ void mainMenu()
     int choice, cinemaNum, titleIndex = 0, timeIndex = 0;
     char title[31], time[31], seatNum[5];
     do{
-        printf("\n===== Main Menu =====\n");
-        printf("1. Preload Schedule\n");
-        printf("2. View Schedule\n");
-        printf("3. Select Seats\n");
-        printf("4. Search Movie\n");
-        printf("5. Print Ticket\n");
-        printf("6. Save and Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        getchar(); // Consume newline left by scanf
+      // Display menu options       
+      printf("\n===== Main Menu =====\n");
+      printf("1. Preload Schedule\n");
+      printf("2. View Schedule\n");
+      printf("3. Select Seats\n");
+      printf("4. Search Movie\n");
+      printf("5. Print Ticket\n");
+      printf("6. Save and Exit\n");
+      printf("Enter your choice: ");
+      scanf("%d", &choice);
+      getchar(); // Consume newline left by scanf
         
         switch (choice) 
         {
             case 1:
-               preloadSched("movieSched.txt"); 
+               preloadSched("movieSched.txt"); // preload current schedule
                printf("Schedule loaded successfully!\n");
                break;
             case 2:
-               viewSched();
+               viewSched(); // view available schedule
                break;
             case 3:
-               seatSelect();
+               seatSelect(); // select seats
                break;
             case 4:
                printf("Enter Movie Title: ");
                scanf(" %[^\n]s", title);
-               searchTitle(title);
+               searchTitle(title); // search movie by title
                printf("Enter Show Time: ");
                scanf(" %[^\n]s", time);
-               searchTime(time);
+               searchTime(time); // search movie by time
                break;
             case 5:
                printf("Enter Cinema Number: ");
@@ -415,7 +434,7 @@ void mainMenu()
                scanf(" %[^\n]s", time);
                printf("Enter Seat Number (ex: A1, B2): ");
                scanf(" %[^\n]s", seatNum);
-               printTicket("Ticket.txt", titleIndex, timeIndex);
+               printTicket("Ticket.txt", titleIndex, timeIndex); // print ticket
                break;
             case 6:
                saveExit("movieSched.txt"); 
@@ -425,7 +444,7 @@ void mainMenu()
                printf("Invalid choice! Please enter a valid number.\n");
                break;
         }
-    } while (choice != 6);
+    } while (choice != 6); // Continue until the user chooses to exit
 }
 
 
