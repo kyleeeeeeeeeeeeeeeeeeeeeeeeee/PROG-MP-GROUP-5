@@ -372,7 +372,7 @@ void searchTime(char *time)
 
 void mainMenu()
 {
-    int choice, cinemaNum;
+    int choice, cinemaNum, titleIndex = 0, timeIndex = 0;
     char title[31], time[31], seatNum[5];
     do{
         printf("\n===== Main Menu =====\n");
@@ -415,7 +415,7 @@ void mainMenu()
                scanf(" %[^\n]s", time);
                printf("Enter Seat Number (ex: A1, B2): ");
                scanf(" %[^\n]s", seatNum);
-               printTicket("Ticket.txt", title, time);
+               printTicket("Ticket.txt", titleIndex, timeIndex);
                break;
             case 6:
                saveExit("movieSched.txt"); 
