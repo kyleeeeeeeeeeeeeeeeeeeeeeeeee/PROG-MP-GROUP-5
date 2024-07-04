@@ -1,27 +1,48 @@
-Cinema Number 000
-Movie Title 1
-181 minutes
-10:00 AM
-11:30 AM
-1:00 PM
-2:30 PM
-4:00 PM
+Cinema Number 1
+Inside Out 
+Description:
+95 minutes
+10:30 AM
+12:50 PM
+3:10 PM
 5:30 PM
-Cinema Number 001
-Movie Title 2
-148 minutes
-9:30 AM
-12:00 PM
-2:30 PM
-5:00 PM
-7:30 PM
-9:30 PM
-Cinema Number 002
-Movie Title 3
-152 minutes
-9:00 AM
-11:30 AM
+7:50 PM
+10:10 PM
+Cinema Number 2
+Avengers: End Game
+180 minutes
+10:30 AM
+2:15 PM
+6:00 PM
+9:45 PM
+Cinema Number 3
+The Dark Knight Rises
+165 minutes
+10:30 AM
 2:00 PM
-4:30 PM
+5:30 PM
+9:00 PM
+Cinema Number 4
+Spider-Man: No Way Home
+150 minutes
+10:30 AM
+1:45 PM
+5:00 PM
+8:15 PM
+11:30 PM
+Cinema Number 5
+Man of Steel
+145 minutes
+10:30 AM
+1:40 PM
+4:50 PM
+8:00 PM
+11:10 PM
+Cinema Number 6
+Iron Man
+125 minutes
+10:30 AM
+1:20 PM
+4:10 PM
 7:00 PM
-9:30 PM
+9:50 PM
