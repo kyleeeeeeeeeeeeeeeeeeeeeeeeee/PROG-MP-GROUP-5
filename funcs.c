@@ -132,56 +132,51 @@ void printTicket(char *filename, int title, int time)
     fclose(fp);
 }
 
-void seatSelect()
-{
-    int i, j, k = 0;
+
+void seatSelect(){
+    int i, j, k=0;
 
     str title;
     str showtime;
     int numSeats;
     str seats[3];
 
-    int titleValid = 0;
+    int titleValid =0;
     int titleIndex;
-    int timeValid = 0;
+    int timeValid=0;
     int timeIndex;
-    int validSeats = 0;
-    int isValid = 0;
+    int validSeats=0;
+    int isValid=0;
 
-    while (titleValid != 1)
-    {
+    int row, col; //index of seats
+
+    while (titleValid != 1){
         printf("Enter Movie Title: ");
         scanf(" %[^\n]s", title);
-
-        for (i=0;i<6;i++)
-        {
-            if (strcmp(title, cinemas[i].Movie.title) == 0)
-            {
+        for (i=0;i<6;i++){
+            if (strcmp(title, cinemas[i].Movie.title) == 0){
                 titleValid = 1;
                 titleIndex = i;
             }
         }
     }
+
     printf("Movie Title: %s\n", cinemas[titleIndex].Movie.title);
     printf("Showing Times:\n");
-    for (j=0;j<3;j++)
-    {
+    for (j=0;j<3;j++){
         printf("\n%s", cinemas[titleIndex].show[j].showingTime);
     }
     printf("\n");
+
     do{
         printf("Enter Showing Time: ");
         scanf(" %[^\n]s", showtime);
-        for (i=0;i<3;i++)
-        {
-            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0)
-            {
-                if (cinemas[titleIndex].show[i].seatsTaken == 50)
-                {
+        for (i=0;i<3;i++){
+            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0){
+                if (cinemas[titleIndex].show[i].seatsTaken == 50){
                     printf("Sorry, all seats are taken.\n");
                 }
-                else if (cinemas[titleIndex].show[i].seatsTaken < 50)
-                {
+                else if (cinemas[titleIndex].show[i].seatsTaken < 50){
                     timeValid = 1;
                     timeIndex=i;
                 }
@@ -195,41 +190,39 @@ void seatSelect()
         printf("\nEnter Number of Seats: ");
         scanf("%d", &numSeats);
         
-    } while (!(numSeats > 0 && numSeats < 4));
+    } while (!(numSeats > 0 && numSeats < 4)); // can reserve up to 3 seats only
 
-    do{
+    do {
         printf("\nEnter Seat[%d]: ", k+1);
         scanf("%s", seats[k]);
 
-        for (i=0;i<5; i++)
-        {
-            for (j=0;j<10; j++)
-            {
-                if (strcmp(cinemas[titleIndex].show[timeIndex].seats[i][j], seats[k]) == 0)
-                {
+        for (i=0;i<5; i++){
+            for (j=0;j<10; j++){
+                if (strcmp(cinemas[titleIndex].show[timeIndex].seats[i][j], seats[k]) == 0){
                     strcpy(cinemas[titleIndex].show[timeIndex].seats[i][j], "X");
                     isValid=1;
                     validSeats++;
+                    row = i;
+                    col = j;
                     k++;
                     cinemas[titleIndex].show[timeIndex].seatsTaken++;
                 }
             }
         }
-        if (isValid == 1)
-        {
+        if (isValid == 1){
             isValid = 0;
+            //printing of tickets
+            printTicket(titleIndex, timeIndex, numSeats, row, col, k);
         }
-        else if (isValid == 0)
-        {
+        else if (isValid == 0){
             printf("\nSeat Taken! Please choose again");
         }
 
-    } while (!(k == numSeats));
+    } while (!(k==numSeats));
 
-    printTicket("Ticket.txt", titleIndex, timeIndex);
     displayTable(titleIndex, timeIndex);
-
 }
+
 
 void preloadSched(char *filename)
 {
