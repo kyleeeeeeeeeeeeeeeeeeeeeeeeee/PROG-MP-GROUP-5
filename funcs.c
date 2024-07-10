@@ -105,33 +105,28 @@ void displayTable(int index, int index2)
     }
 }
 
-void printTicket(char *filename, int title, int time)
-{
+void printTicket(int title, int time, int numSeats, int row, int col, int ticket){
     int i, j;
     FILE *fp;
-    fp = fopen(filename, "a");
-    char c;
-    int n;
+    str filename;
+    char ticketNumber = '0';
 
-    for (i=0;i<5; i++)
-    {
-        for (j=0;j<10; j++)
-        {
-            if (strcmp(cinemas[title].show[time].seats[i][j], "X") == 0)
-            {
-                fprintf(fp, "%d\n", cinemas[title].Movie.numCinema+1);
-                fprintf(fp, "%s\n", cinemas[title].Movie.title);
-                fprintf(fp, "%s\n", cinemas[title].show[time].showingTime);
-                c = i + 65;
-                n = 1 + j;
-                fprintf(fp, "%c%d\n", c, n);
-            }
-        }
+    strcpy(filename, "");   // clear filename
+    strcpy(filename, "Ticket"); 
+    ticketNumber = '0' + ticket;
+    filename[6] = ticketNumber; //number of filename
+    strcat(filename, ".txt");   //file extension (text file)
+
+    fp = fopen(filename, "w");
+    if (strcmp(cinemas[title].show[time].seats[row][col], "X") == 0){
+        fprintf(fp, "%d\n", cinemas[title].Movie.numCinema+1);
+        fprintf(fp, "%s\n", cinemas[title].Movie.title);
+        fprintf(fp, "%s\n", cinemas[title].show[time].showingTime);
+        fprintf(fp, "%c%d\n", row+65, col+1);
     }
     fprintf(fp, "\n");
     fclose(fp);
 }
-
 
 void seatSelect(){
     int i, j, k=0;
