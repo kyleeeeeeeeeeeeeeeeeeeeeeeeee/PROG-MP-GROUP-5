@@ -227,7 +227,6 @@ void preloadSched(char *filename)
     if (fp == NULL) 
     {
         printf("Unable to open file: %s\n", filename);
-        return;
     }
    // Read cinema index and schedule details 
    while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
@@ -236,7 +235,6 @@ void preloadSched(char *filename)
         {
             printf("Cinema index %d out of bounds\n", cinemaIndex);
             fclose(fp);
-            return;
         }    
                 // Read movie title, description, and runtime from file
                 fscanf(fp, "%30[^\n]\n", cinemas[cinemaIndex].Movie.title);
@@ -263,7 +261,6 @@ void saveExit(char *filename)
     if (fp == NULL) 
     {
         printf("Could not open file %s for writing.\n", filename);
-        return;
     }
    
    // Iterate through each cinema
@@ -378,7 +375,7 @@ void searchTime(char *time)
 
 void mainMenu()
 {
-    int choice, cinemaNum, titleIndex = 0, timeIndex = 0;
+    int choice, cinemaNum, titleInd, timeInd, numSeats, row, col, ticket;
     char title[31], time[31], seatNum[5];
     do{
       // Display menu options       
@@ -422,7 +419,7 @@ void mainMenu()
                scanf(" %[^\n]s", time);
                printf("Enter Seat Number (ex: A1, B2): ");
                scanf(" %[^\n]s", seatNum);
-               printTicket("Ticket.txt", titleIndex, timeIndex); // print ticket
+               printTicket(titleInd, timeInd, numSeats, row, col, ticket); // print ticket
                break;
             case 6:
                saveExit("movieSched.txt"); 
