@@ -377,10 +377,11 @@ void mainMenu()
 {
     int choice, cinemaNum, titleInd, timeInd, numSeats, row, col, ticket;
     char title[31], time[31], seatNum[5];
+    preloadSched("movieSched.txt");
     do{
       // Display menu options       
       printf("\n===== Main Menu =====\n");
-      printf("1. Preload Schedule\n");
+      printf("1. Load Schedule\n");
       printf("2. View Schedule\n");
       printf("3. Select Seats\n");
       printf("4. Search Movie\n");
@@ -393,7 +394,7 @@ void mainMenu()
         switch (choice) 
         {
             case 1:
-               preloadSched("movieSched.txt"); // preload current schedule
+               // loadSched();
                printf("Schedule loaded successfully!\n");
                break;
             case 2:
