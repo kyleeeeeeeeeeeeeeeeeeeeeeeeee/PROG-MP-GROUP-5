@@ -452,8 +452,17 @@ void saveExit(char *filename)
 int main() 
 {
     int choice;
+    str filename;
+    str date;
     char title[31], time[31];
     preLoadSched("MovieSched.txt");
+   
+    printf("Enter Date Today(dd-mm-yyyy): "); // for save on exit function
+    scanf(" %[^\n]s", date);
+    strcpy(filename, "show-");
+    strcat(filename, date);
+    strcat(filename, ".txt"); //finalize filename with ".txt" as file extension
+
     do{
         // Display menu options       
         printf("\n===== Main Menu =====\n");
@@ -490,7 +499,7 @@ int main()
                searchTime(time); // search movie by time
                break;
             case 6:
-               saveExit("show-dd-mm-yyyy.txt"); 
+               saveExit(filename); 
                printf("Schedule saved successfully! Exiting program.\n");
                break;
             default:
