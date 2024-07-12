@@ -221,43 +221,61 @@ void seatSelect(){
 
 
 
+
 void preLoadSched(char *filename)
 {
-   int i, cinemaIndex = 0;
+   int i, j=0, k;
+   int cinemaIndex;
+   str line;
+   str temp;
    FILE *fp; 
-   fp = fopen(filename, "r"); // Open file for reading
-    while (fp == NULL) 
+   fp = fopen(filename, "r");
+
+    if (fp == NULL) 
     {
         printf("Unable to open file: %s\n", filename);
-        printf("Please enter valid filename of the schedule file to upload: ");
-        scanf("%s", filename);
-        fp = fopen(filename, "r");
     }
-   // Read cinema index and schedule details 
-   while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
-    {
-        if (cinemaIndex >= MAX_CINEMAS) 
-        {
-            printf("Cinema index %d out of bounds\n", cinemaIndex);
-            fclose(fp);
-        }    
-                // Read movie title, description, and runtime from file
-                fscanf(fp, "%30[^\n]\n", cinemas[cinemaIndex].Movie.title);
-                fscanf(fp, "%100[^\n]\n", cinemas[cinemaIndex].Movie.description);
-                fscanf(fp, "%30[^\n]\n", cinemas[cinemaIndex].Movie.runTime);
-
-                // Read showing times and initialize seat availability
-                for (i = 0; i < MAX_SHOWINGS; i++) 
+    else{
+        printf("Data has been successfully imported\n");
+        fscanf(fp, "%[^\n]\n", line);
+        for (j=0;j<6;j++){
+            if (strlen(line) == 1){
+                cinemaIndex = line[0]-48;
+                if (cinemaIndex > MAX_CINEMAS) 
                 {
-                    if (fscanf(fp, "%30[^\n]\n", cinemas[cinemaIndex].show[i].showingTime) == 1) 
-                    {
-                        // Initialize seats
-                        initializeTable(cinemaIndex, i);
-                    }
+                    printf("Cinema index %d out of bounds\n", cinemaIndex);
+                    fclose(fp);
+                }  
+                
+                else if (cinemaIndex > 0 && cinemaIndex < 7){
+                    cinemas[cinemaIndex-1].Movie.numCinema = cinemaIndex;
+                    // Read movie title, description, and runtime from file
+                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.title);
+                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.description);
+                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.runTime);
+
+                    for (i = 0; i < MAX_SHOWINGS+1; i++) 
+                        {
+                            fscanf(fp, "%30[^\n]\n", line);
+                            if (strlen(line) > 1) 
+                            {
+                                strcpy(cinemas[cinemaIndex-1].show[i].showingTime, line);
+                                // Read showing times and initialize seat availability
+                                initializeTable(cinemaIndex-1, i);
+                            
+                            }
+                            else {
+                                i = i+MAX_SHOWINGS;
+                            }
+                        }
                 }
+            }  
+        }
     }
    fclose(fp);
 }
+
+
 
 void saveExit(char *filename)
 {  
