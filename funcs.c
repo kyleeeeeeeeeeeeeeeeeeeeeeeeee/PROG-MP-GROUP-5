@@ -230,7 +230,7 @@ void preLoadSched(char *filename)
    FILE *fp; 
    fp = fopen(filename, "r");
    
-   while (fp == NULL) 
+   if(fp == NULL) 
     {
         printf("Unable to open file: %s\n", filename);
         printf("Please input the filename of the schedule file to upload: ");
