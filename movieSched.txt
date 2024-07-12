@@ -1,6 +1,6 @@
 1
 Inside Out 
-Description:
+Description: A young girl's emotions—Joy, Sadness, Anger, Fear, and Disgust—navigate her through a major life change.
 95 minutes
 10:30 AM
 12:50 PM
@@ -10,7 +10,7 @@ Description:
 10:10 PM
 2
 Avengers: End Game
-Description:
+Description: The Avengers assemble for a final battle against Thanos to reverse the catastrophic events of the Infinity War.
 180 minutes
 10:30 AM
 2:15 PM
@@ -18,7 +18,7 @@ Description:
 9:45 PM
 3
 The Dark Knight Rises
-Description:
+Description: Batman returns from a long hiatus to protect Gotham City from the terrorist leader Bane.
 165 minutes
 10:30 AM
 2:00 PM
@@ -26,7 +26,7 @@ Description:
 9:00 PM
 4
 Spider-Man: No Way Home
-Description:
+Description: Spider-Man faces multiverse chaos and encounters villains from alternate realities.
 150 minutes
 10:30 AM
 1:45 PM
@@ -35,7 +35,7 @@ Description:
 11:30 PM
 5
 Man of Steel
-Description:
+Description: Superman battles his past and General Zod to save Earth from destruction.
 145 minutes
 10:30 AM
 1:40 PM
@@ -44,7 +44,7 @@ Description:
 11:10 PM
 6
 Iron Man
-Description:
+Description: Billionaire Tony Stark builds a high-tech suit to escape captivity and becomes the superhero Iron Man.
 125 minutes
 10:30 AM
 1:20 PM
