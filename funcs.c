@@ -454,7 +454,7 @@ void mainMenu()
                printTicket(titleInd, timeInd, numSeats, row, col, ticket); // print ticket
                break;
             case 6:
-               saveExit("MovieSched.txt"); 
+               saveExit("show-dd-mm-yyyy.txt"); 
                printf("Schedule saved successfully! Exiting program.\n");
                break;
             default:
