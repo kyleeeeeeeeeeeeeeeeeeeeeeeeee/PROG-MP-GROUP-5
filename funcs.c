@@ -228,7 +228,7 @@ void preloadSched(char *filename)
     {
         printf("Unable to open file: %s\n", filename);
         printf("Please enter valid filename of the schedule file to upload: ");
-        scanf("%s", &filename);
+        scanf("%s", filename);
     }
    // Read cinema index and schedule details 
    while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
@@ -264,7 +264,7 @@ void saveExit(char *filename)
     {
         printf("Could not open file %s for writing.\n", filename);
         printf("Please enter valid filename of the schedule file to upload: ");
-        scanf("%s", &filename);
+        scanf("%s", filename);
     }
    
    // Iterate through each cinema
