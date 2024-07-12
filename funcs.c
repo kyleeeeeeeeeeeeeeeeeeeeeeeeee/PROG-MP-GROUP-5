@@ -260,9 +260,11 @@ void saveExit(char *filename)
 {  
    int i, j, k, l;
    FILE *fp = fopen(filename, "w"); // Open file for writing
-    if (fp == NULL) 
+    while (fp == NULL) 
     {
         printf("Could not open file %s for writing.\n", filename);
+        printf("Please enter valid filename of the schedule file to upload: ");
+        scanf("%s", &filename);
     }
    
    // Iterate through each cinema
