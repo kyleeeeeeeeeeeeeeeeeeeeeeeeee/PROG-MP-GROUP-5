@@ -416,7 +416,7 @@ void mainMenu()
       printf("2. View Schedule\n");
       printf("3. Select Seats\n");
       printf("4. Search Movie\n");
-      printf("5. Print Ticket\n");
+      printf("5. Search Time\n");
       printf("6. Save and Exit\n");
       printf("Enter your choice: ");
       scanf("%d", &choice);
@@ -438,20 +438,11 @@ void mainMenu()
                printf("Enter Movie Title: ");
                scanf(" %[^\n]s", title);
                searchTitle(title); // search movie by title
+               break;
+            case 5:
                printf("Enter Show Time: ");
                scanf(" %[^\n]s", time);
                searchTime(time); // search movie by time
-               break;
-            case 5:
-               printf("Enter Cinema Number: ");
-               scanf("%d", &cinemaNum);
-               printf("Enter Movie Title: ");
-               scanf(" %[^\n]s", title);
-               printf("Enter Show Time: ");
-               scanf(" %[^\n]s", time);
-               printf("Enter Seat Number (ex: A1, B2): ");
-               scanf(" %[^\n]s", seatNum);
-               printTicket(titleInd, timeInd, numSeats, row, col, ticket); // print ticket
                break;
             case 6:
                saveExit("show-dd-mm-yyyy.txt"); 
