@@ -409,15 +409,6 @@ void saveExit(char *filename)
 {  
    int i, j, k, l;
    FILE *fp = fopen(filename, "w"); // Open file for writing
-   /*
-    while (fp == NULL) 
-    {
-        printf("Could not open file %s for writing.\n", filename);
-        printf("Please enter valid filename of the schedule file to upload: ");
-        scanf("%s", filename);
-        fp = fopen(filename, "w");
-    }
-   */
    // Iterate through each cinema
    for (i = 0; i < MAX_CINEMAS; i++) 
     {
