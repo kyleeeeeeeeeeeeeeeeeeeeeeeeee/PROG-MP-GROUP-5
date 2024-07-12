@@ -128,6 +128,7 @@ void printTicket(int title, int time, int numSeats, int row, int col, int ticket
     fclose(fp);
 }
 
+
 void seatSelect(){
     int i, j, k=0;
 
@@ -158,7 +159,7 @@ void seatSelect(){
 
     printf("Movie Title: %s\n", cinemas[titleIndex].Movie.title);
     printf("Showing Times:\n");
-    for (j=0;j<3;j++){
+    for (j=0;j<6;j++){
         printf("\n%s", cinemas[titleIndex].show[j].showingTime);
     }
     printf("\n");
@@ -166,7 +167,7 @@ void seatSelect(){
     do{
         printf("Enter Showing Time: ");
         scanf(" %[^\n]s", showtime);
-        for (i=0;i<3;i++){
+        for (i=0;i<6;i++){
             if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0){
                 if (cinemas[titleIndex].show[i].seatsTaken == 50){
                     printf("Sorry, all seats are taken.\n");
@@ -217,6 +218,7 @@ void seatSelect(){
 
     displayTable(titleIndex, timeIndex);
 }
+
 
 
 void preLoadSched(char *filename)
