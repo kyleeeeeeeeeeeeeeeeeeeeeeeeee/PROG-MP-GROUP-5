@@ -219,7 +219,7 @@ void seatSelect(){
 }
 
 
-void preloadSched(char *filename)
+void preLoadSched(char *filename)
 {
    int i, cinemaIndex = 0;
    FILE *fp; 
@@ -381,7 +381,7 @@ void mainMenu()
 {
     int choice, cinemaNum, titleInd, timeInd, numSeats, row, col, ticket;
     char title[31], time[31], seatNum[5];
-    preloadSched("movieSched.txt");
+    preLoadSched("movieSched.txt");
     do{
       // Display menu options       
       printf("\n===== Main Menu =====\n");
