@@ -403,7 +403,7 @@ void mainMenu()
 {
     int choice, cinemaNum, titleInd, timeInd, numSeats, row, col, ticket;
     char title[31], time[31], seatNum[5];
-    preLoadSched("movieSched.txt");
+    preLoadSched("MovieSched.txt");
     do{
       // Display menu options       
       printf("\n===== Main Menu =====\n");
@@ -449,7 +449,7 @@ void mainMenu()
                printTicket(titleInd, timeInd, numSeats, row, col, ticket); // print ticket
                break;
             case 6:
-               saveExit("movieSched.txt"); 
+               saveExit("MovieSched.txt"); 
                printf("Schedule saved successfully! Exiting program.\n");
                break;
             default:
