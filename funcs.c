@@ -128,14 +128,16 @@ void printTicket(int title, int time, int numSeats, int row, int col, int ticket
     fclose(fp);
 }
 
+
 void seatSelect(){
-    int i, j, k = 0;
+    int i, j, k=0;
+
     str title;
     str showtime;
     int numSeats;
     str seats[3];
 
-    int titleValid = 0;
+    int titleValid =0;
     int titleIndex;
     int timeValid=0;
     int timeIndex;
@@ -157,7 +159,7 @@ void seatSelect(){
 
     printf("Movie Title: %s\n", cinemas[titleIndex].Movie.title);
     printf("Showing Times:\n");
-    for (j=0; j<6; j++){
+    for (j=0;j<6;j++){
         printf("\n%s", cinemas[titleIndex].show[j].showingTime);
     }
     printf("\n");
@@ -165,18 +167,14 @@ void seatSelect(){
     do{
         printf("Enter Showing Time: ");
         scanf(" %[^\n]s", showtime);
-        for (i=0; i<6; i++)
-        {
-            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0)
-            {
-                if (cinemas[titleIndex].show[i].seatsTaken == 50)
-                {
+        for (i=0;i<6;i++){
+            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0){
+                if (cinemas[titleIndex].show[i].seatsTaken == 50){
                     printf("Sorry, all seats are taken.\n");
                 }
-                else if (cinemas[titleIndex].show[i].seatsTaken < 50)
-                {
+                else if (cinemas[titleIndex].show[i].seatsTaken < 50){
                     timeValid = 1;
-                    timeIndex = i;
+                    timeIndex=i;
                 }
             }
         }
@@ -204,6 +202,8 @@ void seatSelect(){
                     col = j;
                     k++;
                     cinemas[titleIndex].show[timeIndex].seatsTaken++;
+                    i=i+5;
+                    j=j+10;
                 }
             }
         }
@@ -216,10 +216,12 @@ void seatSelect(){
             printf("\nSeat Taken! Please choose again");
         }
 
-    } while (!(k == numSeats));
+    } while (!(k==numSeats));
 
     displayTable(titleIndex, timeIndex);
 }
+
+
 
 void preLoadSched(char *filename)
 {
@@ -282,10 +284,12 @@ void preLoadSched(char *filename)
    fclose(fp);
 }
 
+
 void saveExit(char *filename)
 {  
    int i, j, k, l;
    FILE *fp = fopen(filename, "w"); // Open file for writing
+   /*
     while (fp == NULL) 
     {
         printf("Could not open file %s for writing.\n", filename);
@@ -293,24 +297,18 @@ void saveExit(char *filename)
         scanf("%s", filename);
         fp = fopen(filename, "w");
     }
-   
+   */
    // Iterate through each cinema
    for (i = 0; i < MAX_CINEMAS; i++) 
     {
-        if (strlen(cinemas[i].Movie.title) > 0) // Check if cinema has a valid movie title
-        {
-            fprintf(fp, "Cinema No: %d\n", cinemas[i].Movie.numCinema);
-            fprintf(fp, "Title: %s\n", cinemas[i].Movie.title);
-           
-            // Iterate through each showing time
-            for (j = 0; j < MAX_SHOWINGS; j++) 
-            {
-                if (strlen(cinemas[i].show[j].showingTime) > 0) // Check if showing time is valid
-                {
-                    fprintf(fp, "Time: %s\n", cinemas[i].show[j].showingTime);
-                    fprintf(fp, "Taken Seats:\n");
+        for (j=0;j<MAX_SHOWINGS;j++){
+            if (cinemas[i].show[j].seatsTaken > 0){ // check if there is a seat taken from a show time
+                fprintf(fp, "Cinema No: %d\n", cinemas[i].Movie.numCinema);
+                fprintf(fp, "Title: %s\n", cinemas[i].Movie.title);
+                fprintf(fp, "Time: %s\n", cinemas[i].show[j].showingTime);
+                fprintf(fp, "Taken Seats:\n");
 
-                  // Iterate through each seat 
+                // Iterate through each seat 
                   for (k = 0; k < 5; k++) 
                     {
                         for (l = 0; l < 10; l++) 
@@ -324,9 +322,9 @@ void saveExit(char *filename)
                         }
                     }
                     fprintf(fp, "\n\n"); // for formatting purposes
-                }
             }
         }
+
     }
     fclose(fp);
 }
@@ -353,8 +351,10 @@ void viewSched()
             }
          }
       }
+      printf("\n");
     }
 }
+
 
 
 void searchTitle(char *title)
