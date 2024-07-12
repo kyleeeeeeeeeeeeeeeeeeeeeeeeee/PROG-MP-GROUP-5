@@ -128,16 +128,14 @@ void printTicket(int title, int time, int numSeats, int row, int col, int ticket
     fclose(fp);
 }
 
-
 void seatSelect(){
-    int i, j, k=0;
-
+    int i, j, k = 0;
     str title;
     str showtime;
     int numSeats;
     str seats[3];
 
-    int titleValid =0;
+    int titleValid = 0;
     int titleIndex;
     int timeValid=0;
     int timeIndex;
@@ -159,7 +157,7 @@ void seatSelect(){
 
     printf("Movie Title: %s\n", cinemas[titleIndex].Movie.title);
     printf("Showing Times:\n");
-    for (j=0;j<6;j++){
+    for (j=0; j<6; j++){
         printf("\n%s", cinemas[titleIndex].show[j].showingTime);
     }
     printf("\n");
@@ -167,14 +165,18 @@ void seatSelect(){
     do{
         printf("Enter Showing Time: ");
         scanf(" %[^\n]s", showtime);
-        for (i=0;i<6;i++){
-            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0){
-                if (cinemas[titleIndex].show[i].seatsTaken == 50){
+        for (i=0; i<6; i++)
+        {
+            if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0)
+            {
+                if (cinemas[titleIndex].show[i].seatsTaken == 50)
+                {
                     printf("Sorry, all seats are taken.\n");
                 }
-                else if (cinemas[titleIndex].show[i].seatsTaken < 50){
+                else if (cinemas[titleIndex].show[i].seatsTaken < 50)
+                {
                     timeValid = 1;
-                    timeIndex=i;
+                    timeIndex = i;
                 }
             }
         }
@@ -214,45 +216,50 @@ void seatSelect(){
             printf("\nSeat Taken! Please choose again");
         }
 
-    } while (!(k==numSeats));
+    } while (!(k == numSeats));
 
     displayTable(titleIndex, timeIndex);
 }
 
-
-
-
 void preLoadSched(char *filename)
 {
-   int i, j=0, k;
+   int i, j = 0, k;
    int cinemaIndex;
    str line;
    str temp;
    FILE *fp; 
    fp = fopen(filename, "r");
-
-    if (fp == NULL) 
+   
+   while (fp == NULL) 
     {
         printf("Unable to open file: %s\n", filename);
+        printf("Please input the filename of the schedule file to upload: ");
+        scanf("%s", filename);
+        fp = fopen(filename, "r");
     }
-    else{
+   else
+   {
         printf("Data has been successfully imported\n");
         fscanf(fp, "%[^\n]\n", line);
-        for (j=0;j<6;j++){
-            if (strlen(line) == 1){
-                cinemaIndex = line[0]-48;
+      
+        for (j = 0; j < 6; j++)
+        {
+            if (strlen(line) == 1)
+            {
+                cinemaIndex = line[0] - 48;
                 if (cinemaIndex > MAX_CINEMAS) 
                 {
                     printf("Cinema index %d out of bounds\n", cinemaIndex);
                     fclose(fp);
                 }  
                 
-                else if (cinemaIndex > 0 && cinemaIndex < 7){
+                else if (cinemaIndex > 0 && cinemaIndex < 7)
+                {
                     cinemas[cinemaIndex-1].Movie.numCinema = cinemaIndex;
                     // Read movie title, description, and runtime from file
-                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.title);
-                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.description);
-                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.runTime);
+                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex - 1].Movie.title);
+                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex - 1].Movie.description);
+                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex - 1].Movie.runTime);
 
                     for (i = 0; i < MAX_SHOWINGS+1; i++) 
                         {
@@ -262,10 +269,10 @@ void preLoadSched(char *filename)
                                 strcpy(cinemas[cinemaIndex-1].show[i].showingTime, line);
                                 // Read showing times and initialize seat availability
                                 initializeTable(cinemaIndex-1, i);
-                            
                             }
-                            else {
-                                i = i+MAX_SHOWINGS;
+                            else 
+                            {
+                                i = i + MAX_SHOWINGS;
                             }
                         }
                 }
@@ -274,8 +281,6 @@ void preLoadSched(char *filename)
     }
    fclose(fp);
 }
-
-
 
 void saveExit(char *filename)
 {  
