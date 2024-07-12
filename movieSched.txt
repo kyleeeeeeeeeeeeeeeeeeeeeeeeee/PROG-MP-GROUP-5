@@ -1,4 +1,4 @@
-Cinema Number 1
+1
 Inside Out 
 Description:
 95 minutes
@@ -8,7 +8,7 @@ Description:
 5:30 PM
 7:50 PM
 10:10 PM
-Cinema Number 2
+2
 Avengers: End Game
 Description:
 180 minutes
@@ -16,7 +16,7 @@ Description:
 2:15 PM
 6:00 PM
 9:45 PM
-Cinema Number 3
+3
 The Dark Knight Rises
 Description:
 165 minutes
@@ -24,7 +24,7 @@ Description:
 2:00 PM
 5:30 PM
 9:00 PM
-Cinema Number 4
+4
 Spider-Man: No Way Home
 Description:
 150 minutes
@@ -33,7 +33,7 @@ Description:
 5:00 PM
 8:15 PM
 11:30 PM
-Cinema Number 5
+5
 Man of Steel
 Description:
 145 minutes
@@ -42,7 +42,7 @@ Description:
 4:50 PM
 8:00 PM
 11:10 PM
-Cinema Number 6
+6
 Iron Man
 Description:
 125 minutes
