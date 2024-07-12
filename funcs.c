@@ -23,7 +23,7 @@ struct showTag{
 };
 struct ViewMovieTag{    // main tag: structure for showing movies (1 showing time = 1 cinema)
     struct MovieTag Movie;
-    struct showTag show[15];
+    struct showTag show[MAX_SHOWINGS];
 };
 
 struct ViewMovieTag cinemas[MAX_CINEMAS]; // Array of cinema schedules
