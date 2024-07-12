@@ -50,7 +50,7 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
 initializeTable(int index, 
-                     int index2)
+                int index2)
 {
    int i, j;
    
