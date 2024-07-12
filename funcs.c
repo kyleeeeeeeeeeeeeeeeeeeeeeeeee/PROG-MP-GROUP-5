@@ -224,9 +224,11 @@ void preloadSched(char *filename)
    int i, cinemaIndex = 0;
    FILE *fp; 
    fp = fopen(filename, "r"); // Open file for reading
-    if (fp == NULL) 
+    while (fp == NULL) 
     {
         printf("Unable to open file: %s\n", filename);
+        printf("Please enter valid filename of the schedule file to upload: ");
+        scanf("%s", &filename);
     }
    // Read cinema index and schedule details 
    while (fscanf(fp, "%d\n", &cinemaIndex) == 1) 
