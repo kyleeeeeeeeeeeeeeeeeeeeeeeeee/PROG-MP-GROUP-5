@@ -344,7 +344,7 @@ void viewSched()
             // check if showing time is valid
             if (strlen(cinemas[i].show[j].showingTime) > 0) 
             {
-                  printf("  Show Time: %s\n", cinemas[i].show[j].showingTime);
+                  printf("Show Time: %s\n", cinemas[i].show[j].showingTime);
             }
          }
       }
