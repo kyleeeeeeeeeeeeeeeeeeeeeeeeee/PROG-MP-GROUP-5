@@ -145,7 +145,8 @@ Pre-condition: cinemas is a global structure with appropriate fields0.
 void 
 preLoadSched(char *pFilename)
 {
-   int i, j = 0, nCinemaIndex;
+   int i, j = 0;
+   int nCinemaIndex;
    string strLine;
    
    FILE *pFp; 
@@ -207,19 +208,21 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 loadSched()
 {
-   int i, j = 0, nCinemaIndex;
-   string strLine, pFilename;
-   FILE *pFp; 
+   int i, j = 0;
+   int nCinemaIndex;
+   string strLine;
+   string strFilename;
    
+   FILE *pFp; 
    printf("Enter filename: ");
-   scanf("%s", pFilename);
-   pFp = fopen(pFilename, "r");
+   scanf("%s", strFilename);
+   pFp = fopen(strFilename, "r");
 
    while (pFp == NULL) 
    {
       printf("Unable to open file. Please input filename again:\n");
-      scanf("%s", pFilename);
-      pFp = fopen(pFilename, "r");     
+      scanf("%s", strFilename);
+      pFp = fopen(strFilename, "r");     
    }
    if (pFp != NULL)
    {
@@ -243,13 +246,13 @@ loadSched()
                fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex - 1].sMovie.strDescription);
                fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex - 1].sMovie.strRunTime);
                
-               for (i = 0; i < MAX_SHOWINGS+1; i++) 
+               for (i = 0; i < MAX_SHOWINGS + 1; i++) 
                {
                   fscanf(pFp, "%30[^\n]\n", strLine);
                   if (strlen(strLine) > 1) 
                   {
-                     strcpy(arrCinemas[nCinemaIndex-1].arrShow[i].strShowTime, strLine);
-                     initializeTable(nCinemaIndex-1, i);
+                     strcpy(arrCinemas[nCinemaIndex - 1].arrShow[i].strShowTime, strLine);
+                     initializeTable(nCinemaIndex - 1, i);
                   }
                   else 
                   {
@@ -342,8 +345,12 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 selectSeat()
 {
-   int i, j, k = 0, nNumSeats, nValidTitle = 0, nTitleIndex = 0, nValidTime = 0;
-   int nTimeIndex, nValidSeats = 0, nValid = 0, nRow, nCol;
+   int nRow, nCol;
+   int i, j, k = 0;
+   int nValidTitle = 0;
+   int nNumSeats, nTimeIndex;
+   int nValidSeats = 0, nValid = 0;
+   int nTitleIndex = 0, nValidTime = 0;
    string strTitle, strShowingTime, strSeats[3];
 
    while (nValidTitle != 1)
