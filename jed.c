@@ -198,14 +198,14 @@ preLoadSched(char *filename)
    fclose(fp);
 }
 
-/* LoadSched reads and loads schedule data from a file into the cinema system,
+/* loadSched reads and loads schedule data from a file into the cinema system,
    prompting the user for a filename that will be used.
 @param none - This function does not have a parameter
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-LoadSched()
+loadSched()
 {
    int i, j = 0, cinemaIndex;
    str line, filename;
@@ -333,13 +333,14 @@ printTicket(int title,
    fclose(fp);
 }
 
-/* printTicket creates and prints a ticket to a text file.
+/* selectSeat prompts the user to select a movie, showing time, and seats, 
+then reserves the selected seats.
 @param none - This function does not have a parameter
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-seatSelect()
+selectSeat()
 {
    int i, j, k = 0, numSeats, titleValid = 0, titleIndex = 0, timeValid = 0;
    int timeIndex, validSeats = 0, isValid = 0, row, col;
@@ -566,7 +567,7 @@ int main()
             viewSched(); // view available schedule
             break;
          case 3:
-            seatSelect(); // select seats
+            selectSeat(); // select seats
             break;
          case 4:
             printf("Enter Movie Title: ");
