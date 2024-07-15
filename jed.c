@@ -16,98 +16,98 @@ Kyle Gabriel A. Maristela, DLSU ID# 12307777
 #define MAX_SHOWINGS 6
 #define MAX_SEATS 50
 
-typedef char longstr[101];
-typedef char str[31];
+typedef char longString[101];
+typedef char string[31];
 
-struct MovieTag
+struct sMovieTag
 {
-   int numCinema;
-   str title;
-   longstr description;
-   str runTime;
+   int nNumCinema;
+   string strTitle;
+   longString strDescription;
+   string strRunTime;
 };
 
-struct showTag
+struct sShowTag
 {
-    str showingTime;
-    str seats[5][10];
-    int seatsTaken;
+    string strShowTime;
+    string arrSeats[5][10];
+    int nTakenSeats;
 };
 
-struct ViewMovieTag // main tag: structure for showing movies (1 showing time = 1 cinema)
+struct sViewMovieTag // main tag: structure for showing movies (1 showing time = 1 cinema)
 {    
-    struct MovieTag Movie;
-    struct showTag show[MAX_SHOWINGS];
+    struct sMovieTag sMovie;
+    struct sShowTag arrShow[MAX_SHOWINGS];
 };
 
-struct ViewMovieTag cinemas[MAX_CINEMAS]; // Array of cinema schedules
+struct sViewMovieTag arrCinemas[MAX_CINEMAS]; // Array of cinema schedules
 
 /* initializeTable initializes the seat labels for a cinema's show.
-@param index - index of the cinema
-@param index2 - index of the show
+@param nIndex - index of the cinema
+@param nIndex2 - index of the show
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-initializeTable(int index, 
-                int index2)
+initializeTable(int nIndex, 
+                int nIndex2)
 {
-   int i, j;
+   int nRow, nCol;
    
-   for (i = 0; i < 5; i++)
+   for (nRow = 0; nRow < 5; nRow++)
    {
-      for (j = 0; j < 10; j++)
+      for (nCol = 0; nCol < 10; nCol++)
       {
          switch (i) 
          {
             case 0:
-                strcpy(cinemas[index].show[index2].seats[i][j], "A");
+                strcpy(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "A");
                 break;
             case 1:
-                strcpy(cinemas[index].show[index2].seats[i][j], "B");
+                strcpy(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "B");
                 break;
             case 2:
-                strcpy(cinemas[index].show[index2].seats[i][j], "C");
+                strcpy(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "C");
                 break;
             case 3:
-                strcpy(cinemas[index].show[index2].seats[i][j], "D");
+                strcpy(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "D");
                 break;
             case 4:
-                strcpy(cinemas[index].show[index2].seats[i][j], "E");
+                strcpy(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "E");
                 break;
             } 
          
          switch (j) 
          {
             case 0:
-               strcat(cinemas[index].show[index2].seats[i][j], "1");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "1");
                break;
             case 1:
-               strcat(cinemas[index].show[index2].seats[i][j], "2");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "2");
                break;
             case 2:
-               strcat(cinemas[index].show[index2].seats[i][j], "3");
-                break;
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "3");
+               break;
             case 3:
-               strcat(cinemas[index].show[index2].seats[i][j], "4");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "4");
                break;
             case 4:
-               strcat(cinemas[index].show[index2].seats[i][j], "5");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "5");
                break;
             case 5:
-               strcat(cinemas[index].show[index2].seats[i][j], "6");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "6");
                break;
             case 6:
-               strcat(cinemas[index].show[index2].seats[i][j], "7");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "7");
                break;
             case 7:
-               strcat(cinemas[index].show[index2].seats[i][j], "8");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "8");
                break;
             case 8:
-               strcat(cinemas[index].show[index2].seats[i][j], "9");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "9");
                break;
             case 9:
-               strcat(cinemas[index].show[index2].seats[i][j], "10");
+               strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "10");
                break;
          }
       }
@@ -115,22 +115,22 @@ initializeTable(int index,
 }
 
 /* displayTable prints the seating arrangement for a specific cinema show.
-@param index - index of the cinema
-@param index2 - index of the show
+@param nIndex - index of the cinema
+@param nIndex2 - index of the show
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-displayTable(int index, 
-             int index2)
+displayTable(int nIndex, 
+             int nIndex2)
 {
-   int i, j;
+   int nRow, nCol;
    
-   for (i = 0; i < 5; i++)
+   for (nRow = 0; nRow < 5; nRow++)
    {
-      for (j = 0; j < 10; j++)
+      for (nCol = 0; nCol < 10; nCol++)
       {
-         printf("%s ", cinemas[index].show[index2].seats[i][j]);
+         printf("%s ", arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol]);
       }
       printf("\n\n");
    }
@@ -138,53 +138,53 @@ displayTable(int index,
 
 /* preLoadSched reads and preloads schedule data from a file into the cinema system 
    at the start of the program.
-@param filename - name of the file containing the schedule data
+@param *pFilename - name of the file containing the schedule data
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields0.
 */
 void 
-preLoadSched(char *filename)
+preLoadSched(char *pFilename)
 {
-   int i, j = 0, cinemaIndex;
-   str line;
+   int i, j = 0, nCinemaIndex;
+   string strLine;
    
-   FILE *fp; 
-   fp = fopen(filename, "r");
+   FILE *pFp; 
+   pFp = fopen(pFilename, "r");
    
-   if (fp == NULL) 
+   if (pFp == NULL) 
    {
-      printf("Unable to open file: %s\n", filename);
+      printf("Unable to open file: %s\n", pFilename);
    }   
    else
    {
       printf("Data has been successfully imported\n");
-      fscanf(fp, "%[^\n]\n", line);
+      fscanf(fp, "%[^\n]\n", strLine);
       
       for (j = 0; j < 6; j++)
       {
-         if (strlen(line) == 1)
+         if (strlen(strLine) == 1)
          {
-            cinemaIndex = line[0] - 48; 
-            if (cinemaIndex > MAX_CINEMAS) 
+            nCinemaIndex = strLine[0] - 48; 
+            if (nCinemaIndex > MAX_CINEMAS) 
             {
-                    printf("Cinema index %d out of bounds\n", cinemaIndex);
-                    fclose(fp);
+                    printf("Cinema index %d out of bounds\n", nCinemaIndex);
+                    fclose(pFp);
             }
-            else if (cinemaIndex > 0 && cinemaIndex < 7)
+            else if (nCinemaIndex > 0 && nCinemaIndex < 7)
             {
-                    cinemas[cinemaIndex-1].Movie.numCinema = cinemaIndex;
+                    arrCinemas[nCinemaIndex-1].sMovie.nNumCinema = nCinemaIndex;
                     // Read movie title, description, and runtime from file
-                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.title);
-                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.description);
-                    fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex-1].Movie.runTime);
+                    fscanf(fp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strTitle);
+                    fscanf(fp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strDescription);
+                    fscanf(fp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strRunTime);
                
                for (i = 0; i < MAX_SHOWINGS + 1; i++) 
                {
-                  fscanf(fp, "%30[^\n]\n", line);
-                  if (strlen(line) > 1)
+                  fscanf(pFp, "%30[^\n]\n", strLine);
+                  if (strlen(strLine) > 1)
                   {
-                     strcpy(cinemas[cinemaIndex - 1].show[i].showingTime, line);
-                     initializeTable(cinemaIndex - 1, i);
+                     strcpy(arrCinemas[nCinemaIndex - 1].arrShow[i].strShowTime, strLine);
+                     initializeTable(nCinemaIndex - 1, i);
                   }
                   else 
                   {
@@ -195,7 +195,7 @@ preLoadSched(char *filename)
          }  
       }
    }
-   fclose(fp);
+   fclose(pFp);
 }
 
 /* loadSched reads and loads schedule data from a file into the cinema system,
@@ -207,60 +207,60 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 loadSched()
 {
-   int i, j = 0, cinemaIndex;
-   str line, filename;
-   FILE *fp; 
+   int i, j = 0, nCinemaIndex;
+   string strLine, pFilename;
+   FILE *pFp; 
    
    printf("Enter filename: ");
-   scanf("%s", filename);
-   fp = fopen(filename, "r");
+   scanf("%s", pFilename);
+   pFp = fopen(pFilename, "r");
 
-   while (fp == NULL) 
+   while (pFp == NULL) 
    {
       printf("Unable to open file. Please input filename again:\n");
-      scanf("%s", filename);
-      fp = fopen(filename, "r");     
+      scanf("%s", pFilename);
+      pFp = fopen(pFilename, "r");     
    }
-   if (fp != NULL)
+   if (pFp != NULL)
    {
       printf("Data has been successfully imported\n");
-      fscanf(fp, "%[^\n]\n", line);
+      fscanf(pFp, "%[^\n]\n", strLine);
       
       for (j = 0; j < 6; j++)
       {
          if (strlen(line) == 1)
          {
-            cinemaIndex = line[0] - 48;
-            if (cinemaIndex > MAX_CINEMAS) 
+            nCinemaIndex = strLine[0] - 48;
+            if (nCinemaIndex > MAX_CINEMAS) 
             {
-               printf("Cinema index %d out of bounds\n", cinemaIndex);
-               fclose(fp);
+               printf("Cinema index %d out of bounds\n", nCinemaIndex);
+               fclose(pFp);
             }  
-            else if (cinemaIndex > 0 && cinemaIndex < 7)
+            else if (nCinemaIndex > 0 && nCinemaIndex < 7)
             {
-               cinemas[cinemaIndex - 1].Movie.numCinema = cinemaIndex;
-               fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex - 1].Movie.title);
-               fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex - 1].Movie.description);
-               fscanf(fp, "%[^\n]\n", cinemas[cinemaIndex - 1].Movie.runTime);
+               arrCinemas[nCinemaIndex - 1].sMovie.nNumCinema = nCinemaIndex;
+               fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex - 1].sMovie.strTitle);
+               fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex - 1].sMovie.strDescription);
+               fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex - 1].sMovie.strRunTime);
                
                for (i = 0; i < MAX_SHOWINGS+1; i++) 
                {
-                  fscanf(fp, "%30[^\n]\n", line);
-                  if (strlen(line) > 1) 
+                  fscanf(pFp, "%30[^\n]\n", strLine);
+                  if (strlen(strLine) > 1) 
                   {
-                     strcpy(cinemas[cinemaIndex-1].show[i].showingTime, line);
-                     initializeTable(cinemaIndex-1, i);
+                     strcpy(arrCinemas[nCinemaIndex-1].arrShow[i].strShowTime, strLine);
+                     initializeTable(nCinemaIndex-1, i);
                   }
                   else 
                   {
-                                i = i + MAX_SHOWINGS;
+                                i += MAX_SHOWINGS;
                   }
                }
             }
          }  
       }
    }
-   fclose(fp);
+   fclose(pFp);
 }
 
 /* viewSched displays the schedule of movies and their show times for each cinema.
@@ -276,14 +276,14 @@ viewSched()
    // Iterate through each cinema
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
-      if (strlen(cinemas[i].Movie.title) > 0) 
+      if (strlen(arrCinemas[i].sMovie.strTitle) > 0) 
       {
-         printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+         printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
          for (j = 0; j < MAX_SHOWINGS; j++) 
          {
-            if (strlen(cinemas[i].show[j].showingTime) > 0) 
+            if (strlen(arrCinemas[i].sShow[j].strShowTime) > 0) 
             {
-               printf("Show Time: %s\n", cinemas[i].show[j].showingTime);
+               printf("Show Time: %s\n", cinemas[i].sShow[j].strShowTime);
             }
          }
       }
@@ -560,7 +560,7 @@ int main()
       switch (choice) 
       {
          case 1:
-            LoadSched();
+            loadSched();
             printf("Schedule loaded successfully!\n");
             break;
          case 2:
