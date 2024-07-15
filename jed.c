@@ -58,7 +58,7 @@ initializeTable(int nIndex,
    {
       for (nCol = 0; nCol < 10; nCol++)
       {
-         switch (i) 
+         switch (nRow) 
          {
             case 0:
                 strcpy(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "A");
@@ -77,7 +77,7 @@ initializeTable(int nIndex,
                 break;
             } 
          
-         switch (j) 
+         switch (nCol) 
          {
             case 0:
                strcat(arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol], "1");
@@ -158,7 +158,7 @@ preLoadSched(char *pFilename)
    else
    {
       printf("Data has been successfully imported\n");
-      fscanf(fp, "%[^\n]\n", strLine);
+      fscanf(pFp, "%[^\n]\n", strLine);
       
       for (j = 0; j < 6; j++)
       {
@@ -174,9 +174,9 @@ preLoadSched(char *pFilename)
             {
                     arrCinemas[nCinemaIndex-1].sMovie.nNumCinema = nCinemaIndex;
                     // Read movie title, description, and runtime from file
-                    fscanf(fp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strTitle);
-                    fscanf(fp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strDescription);
-                    fscanf(fp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strRunTime);
+                    fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strTitle);
+                    fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strDescription);
+                    fscanf(pFp, "%[^\n]\n", arrCinemas[nCinemaIndex-1].sMovie.strRunTime);
                
                for (i = 0; i < MAX_SHOWINGS + 1; i++) 
                {
@@ -228,7 +228,7 @@ loadSched()
       
       for (j = 0; j < 6; j++)
       {
-         if (strlen(line) == 1)
+         if (strlen(strLine) == 1)
          {
             nCinemaIndex = strLine[0] - 48;
             if (nCinemaIndex > MAX_CINEMAS) 
@@ -281,9 +281,9 @@ viewSched()
          printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
          for (j = 0; j < MAX_SHOWINGS; j++) 
          {
-            if (strlen(arrCinemas[i].sShow[j].strShowTime) > 0) 
+            if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
             {
-               printf("Show Time: %s\n", cinemas[i].sShow[j].strShowTime);
+               printf("Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
             }
          }
       }
@@ -292,45 +292,45 @@ viewSched()
 }
 
 /* printTicket creates and prints a ticket to a text file.
-@param title - index of the movie title in cinemas array
-@param time - index of the show time in cinemas array
-@param numSeats - number of seats in the cinema
-@param row - row number of the seat
-@param col - column number of the seat
-@param ticket - ticket number
+@param nTitle - index of the movie title in cinemas array
+@param nTime - index of the show time in cinemas array
+@param nNumSeats - number of seats in the cinema
+@param nRow - row number of the seat
+@param nCol - column number of the seat
+@param nTicket - ticket number
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-printTicket(int title, 
-            int time, 
-            int numSeats, 
-            int row, 
-            int col, 
-            int ticket)
+printTicket(int nTitle, 
+            int nTime, 
+            int nNumSeats, 
+            int nRow, 
+            int nCol, 
+            int nTicket)
 {
-   str filename;
-   char ticketNumber = '0';
-   FILE *fp;
+   string strFilename;
+   char cTicketNumber = '0';
+   FILE *pFp;
 
-   strcpy(filename, "");   // clear filename
-   strcpy(filename, "Ticket"); 
+   strcpy(strFilename, "");   // clear filename
+   strcpy(strFilename, "Ticket"); 
    
-   ticketNumber = '0' + ticket;
-   filename[6] = ticketNumber; //number of filename
+   cTicketNumber = '0' + nTicket;
+   strFilename[6] = cTicketNumber; //number of filename
    
-   strcat(filename, ".txt");   //file extension (text file)
-   fp = fopen(filename, "w");
+   strcat(strFilename, ".txt");   //file extension (text file)
+   pFp = fopen(strFilename, "w");
    
-   if (strcmp(cinemas[title].show[time].seats[row][col], "X") == 0)
+   if (strcmp(arrCinemas[nTitle].arrShow[nTime].arrSeats[nRow][nCol], "X") == 0)
    {
-      fprintf(fp, "%d\n", cinemas[title].Movie.numCinema+1);
-      fprintf(fp, "%s\n", cinemas[title].Movie.title);
-      fprintf(fp, "%s\n", cinemas[title].show[time].showingTime);
-      fprintf(fp, "%c%d\n", row + 65, col + 1);
+      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema + 1);
+      fprintf(pFp, "%s\n", arrCinemas[nTitle].sMovie.strTitle);
+      fprintf(pFp, "%s\n", arrCinemas[nTitle].arrShow[nTime].strShowTime);
+      fprintf(pFp, "%c%d\n", nRow + 65, nCol + 1);
     }
-   fprintf(fp, "\n");
-   fclose(fp);
+   fprintf(pFp, "\n");
+   fclose(pFp);
 }
 
 /* selectSeat prompts the user to select a movie, showing time, and seats, 
@@ -342,31 +342,31 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 selectSeat()
 {
-   int i, j, k = 0, numSeats, titleValid = 0, titleIndex = 0, timeValid = 0;
-   int timeIndex, validSeats = 0, isValid = 0, row, col;
-   str title, showtime, seats[3];
+   int i, j, k = 0, nNumSeats, nValidTitle = 0, nTitleIndex = 0, nValidTime = 0;
+   int nTimeIndex, nValidSeats = 0, nValid = 0, nRow, nCol;
+   string strTitle, strShowingTime, strSeats[3];
 
-   while (titleValid != 1)
+   while (nValidTitle != 1)
    {
       printf("Enter Movie Title: ");
-      scanf(" %[^\n]s", title);
+      scanf(" %[^\n]s", strTitle);
       
       for (i = 0; i < 6; i++)
       {
-         if (strcmp(title, cinemas[i].Movie.title) == 0)
+         if (strcmp(strTitle, arrCinemas[i].sMovie.strTitle) == 0)
          {
-            titleValid = 1;
-            titleIndex = i;
+            nValidTitle = 1;
+            nTitleIndex = i;
          }
       }
    }
    
-   printf("Movie Title: %s\n", cinemas[titleIndex].Movie.title);
+   printf("Movie Title: %s\n", arrCinemas[nTitleIndex].sMovie.strTitle);
    printf("Showing Times:\n");
    
    for (j = 0; j < 6; j++)
    {
-      printf("\n%s", cinemas[titleIndex].show[j].showingTime);
+      printf("\n%s", arrCinemas[nTitleIndex].arrShow[j].strShowTime);
    }
    
    printf("\n");
@@ -374,91 +374,91 @@ selectSeat()
    do
    {
       printf("Enter Showing Time: ");
-      scanf(" %[^\n]s", showtime);
+      scanf(" %[^\n]s", strShowingTime);
       
       for (i = 0; i < 6; i++)
       {
-         if (strcmp(cinemas[titleIndex].show[i].showingTime, showtime) == 0)
+         if (strcmp(arrCinemas[nTitleIndex].arrShow[i].strShowTime, strShowingTime) == 0)
          {
-            if (cinemas[titleIndex].show[i].seatsTaken == 50)
+            if (arrCinemas[nTitleIndex].arrShow[i].nTakenSeats == 50)
             {
                printf("Sorry, all seats are taken.\n");
             }
-            else if (cinemas[titleIndex].show[i].seatsTaken < 50)
+            else if (arrCinemas[nTitleIndex].arrShow[i].nTakenSeats < 50)
             {
-               timeValid = 1;
-               timeIndex = i;
+               nValidTime = 1;
+               nTimeIndex = i;
             }
          }
       }
-   } while (timeValid != 1);
+   } while (nValidTime != 1);
    
-   displayTable(titleIndex, timeIndex);
+   displayTable(nTitleIndex, nTimeIndex);
 
    do
    {
       printf("\nEnter Number of Seats: ");
-      scanf("%d", &numSeats); 
-   } while (!(numSeats > 0 && numSeats < 4)); // can reserve up to 3 seats only
+      scanf("%d", &nNumSeats); 
+   } while (!(nNumSeats > 0 && nNumSeats < 4)); // can reserve up to 3 seats only
    
    do 
    {
       printf("\nEnter Seat[%d]: ", k + 1);
-      scanf("%s", seats[k]);
+      scanf("%s", strSeats[k]);
 
       for (i = 0; i < 5; i++)
       {
          for (j = 0; j < 10; j++)
          {
-            if (strcmp(cinemas[titleIndex].show[timeIndex].seats[i][j], seats[k]) == 0)
+            if (strcmp(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], strSeats[k]) == 0)
             {
-               strcpy(cinemas[titleIndex].show[timeIndex].seats[i][j], "X");
-               isValid = 1;
-               validSeats++;
-               row = i;
-               col = j;
+               strcpy(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], "X");
+               nValid = 1;
+               nValidSeats++;
+               nRow = i;
+               nCol = j;
                k++;
-               cinemas[titleIndex].show[timeIndex].seatsTaken++;
+               arrCinemas[nTitleIndex].arrShow[nTimeIndex].nTakenSeats++;
                i = i + 5;
                j = j + 10;
             }
          }
       }
-      if (isValid == 1)
+      if (nValid == 1)
       { 
-         isValid = 0;
-         printTicket(titleIndex, timeIndex, numSeats, row, col, k); 
+         nValid = 0;
+         printTicket(nTitleIndex, nTimeIndex, nNumSeats, nRow, nCol, k); 
       }
-      else if (isValid == 0)
+      else if (nValid == 0)
       {
          printf("\nSeat Taken! Please choose again");
       }
-    } while (!(k == numSeats));
+    } while (!(k == nNumSeats));
 
-    displayTable(titleIndex, timeIndex);
+    displayTable(nTitleIndex, nTimeIndex);
 }
 
 /* searchTitle searches for a movie title across all cinemas and displays its details.
-@param title - pointer to a string containing the movie title to search for
+@param *pTitle - pointer to a string containing the movie title to search for
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-searchTitle(char *title)
+searchTitle(char *pTitle)
 {
    int i, j;
 
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
-      if (strlen(cinemas[i].Movie.title) > 0 && strcmp(cinemas[i].Movie.title, title) == 0) 
+      if (strlen(arrCinemas[i].sMovie.strTitle) > 0 && strcmp(arrCinemas[i].sMovie.strTitle, pTitle) == 0) 
       {
-         printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
+         printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
          for (j = 0; j < MAX_SHOWINGS; j++) 
          {
-            if (strlen(cinemas[i].show[j].showingTime) > 0) 
+            if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
             {
-               printf("\tShow Time: %s\n", cinemas[i].show[j].showingTime);
-               printf("\tAvailable Seats: %d\n\n", MAX_SEATS - cinemas[i].show[j].seatsTaken);
+               printf("\tShow Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+               printf("\tAvailable Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
             }
          }
       }
@@ -466,12 +466,12 @@ searchTitle(char *title)
 }
 
 /* searchTime searches for a specific show time across all cinemas and displays matching details.
-@param time - pointer to a string containing the show time to search for
+@param *pTime - pointer to a string containing the show time to search for
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-searchTime(char *time)
+searchTime(char *pTime)
 {
    int i, j;
    
@@ -479,70 +479,70 @@ searchTime(char *time)
    {
       for (j = 0; j < MAX_SHOWINGS; j++) 
       {
-         if (strlen(cinemas[i].show[j].showingTime) > 0 && strcmp(cinemas[i].show[j].showingTime, time) == 0) 
+         if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0 && strcmp(arrCinemas[i].arrShow[j].strShowTime, pTime) == 0) 
          {
-            printf("Cinema %d: %s\n", cinemas[i].Movie.numCinema, cinemas[i].Movie.title);
-            printf("  Show Time: %s\n", cinemas[i].show[j].showingTime);
-            printf("  Available Seats: %d\n", MAX_SEATS - cinemas[i].show[j].seatsTaken);
+            printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+            printf("  Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+            printf("  Available Seats: %d\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
          }
       }
    }
 }
 
 /* saveExit saves the current state of cinemas and their booked seats to a file.
-@param filename - pointer to a string containing the filename to save data into
+@param pFilename - pointer to a string containing the filename to save data into
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-saveExit(char *filename)
+saveExit(char *pFilename)
 {  
    int i, j, k, l;
-   FILE *fp = fopen(filename, "w");
+   FILE *pFp = fopen(pFilename, "w");
 
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
       for (j = 0; j < MAX_SHOWINGS; j++)
       {
-         if (cinemas[i].show[j].seatsTaken > 0)
+         if (arrCinemas[i].arrShow[j].nTakenSeats > 0)
          {
-            fprintf(fp, "Cinema No: %d\n", cinemas[i].Movie.numCinema);
-            fprintf(fp, "Title: %s\n", cinemas[i].Movie.title);
-            fprintf(fp, "Time: %s\n", cinemas[i].show[j].showingTime);
-            fprintf(fp, "Taken Seats:\n");
+            fprintf(pFp, "Cinema No: %d\n", arrCinemas[i].sMovie.nNumCinema);
+            fprintf(pFp, "Title: %s\n", arrCinemas[i].sMovie.strTitle);
+            fprintf(pFp, "Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+            fprintf(pFp, "Taken Seats:\n");
             
             for (k = 0; k < 5; k++) 
             {
                for (l = 0; l < 10; l++) 
                {   
-                  if (strcmp(cinemas[i].show[j].seats[k][l], "X") == 0) 
+                  if (strcmp(arrCinemas[i].arrShow[j].arrSeats[k][l], "X") == 0) 
                   { 
                      // Seat identifier ex: A1, B2 
-                     fprintf(fp, "%c%d, ", 'A' + k, l + 1);
+                     fprintf(pFp, "%c%d, ", 'A' + k, l + 1);
                   }
                } 
             }
-            fprintf(fp, "\n\n"); // for formatting purposes
+            fprintf(pFp, "\n\n"); // for formatting purposes
          }
       }
    }
-   fclose(fp);
+   fclose(pFp);
 }
 
 int main() 
 {
-   int choice;
-   str filename, date;
-   char title[31], time[31];
+   int nChoice;
+   string strFilename, strDate;
+   char strTitle[31], strTime[31];
    
    preLoadSched("MovieSched.txt");
    
    printf("Enter Date Today(dd-mm-yyyy): "); // for save on exit function
-   scanf(" %[^\n]s", date);
+   scanf(" %[^\n]s", strDate);
    
-   strcpy(filename, "show-");
-   strcat(filename, date);
-   strcat(filename, ".txt"); //finalize filename with ".txt" as file extension
+   strcpy(strFilename, "show-");
+   strcat(strFilename, strDate);
+   strcat(strFilename, ".txt"); //finalize filename with ".txt" as file extension
 
    do
    {   
@@ -554,10 +554,10 @@ int main()
       printf("5. Search Time\n");
       printf("6. Save and Exit\n");
       printf("Enter your choice: ");
-      scanf("%d", &choice);
+      scanf("%d", &nChoice);
       getchar(); // Consume newline left by scanf
       
-      switch (choice) 
+      switch (nChoice) 
       {
          case 1:
             loadSched();
@@ -571,23 +571,23 @@ int main()
             break;
          case 4:
             printf("Enter Movie Title: ");
-            scanf(" %[^\n]s", title);
-            searchTitle(title); // search movie by title
+            scanf(" %[^\n]s", strTitle);
+            searchTitle(strTitle); // search movie by title
             break;
          case 5:
             printf("Enter Show Time: ");
-            scanf(" %[^\n]s", time);
-            searchTime(time); // search movie by time
+            scanf(" %[^\n]s", strTime);
+            searchTime(strTime); // search movie by time
             break;
          case 6:
-            saveExit(filename); 
+            saveExit(strFilename); 
             printf("Schedule saved successfully! Exiting program.\n");
             break;
          default:
             printf("Invalid choice! Please enter a valid number.\n");
             break;
       }
-   } while (choice != 6); // Continue until the user chooses to exit
+   } while (nChoice != 6); // Continue until the user chooses to exit
    
    return 0;
 }
