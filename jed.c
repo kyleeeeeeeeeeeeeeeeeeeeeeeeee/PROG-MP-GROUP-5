@@ -42,6 +42,64 @@ struct sViewMovieTag // main tag: structure for showing movies (1 showing time =
 
 struct sViewMovieTag arrCinemas[MAX_CINEMAS]; // Array of cinema schedules
 
+/* format to be fixed
+void displayTopMovies()
+{
+	struct{
+		char title[31];
+		int totalSeats;
+	}movies[MAX_CINEMAS];
+	
+	int i, j;
+	int numMovies = 0;
+	
+	for(i = 0; i < MAX_CINEMAS; i++)
+	{
+		if(strlen(arrCinemas[i].sMovie.strTitle) > 0)
+		{
+			int totalSeats = 0;
+			for(j = 0; j < MAX_SHOWINGS; j++)
+			{
+				totalSeats += arrCinemas[i].arrShow[j].nTakenSeats;
+			}
+			
+			strcpy(movies[numMovies].title, arrCinemas[i].sMovie.strTitle);
+			
+			movies[numMovies].totalSeats = totalSeats;
+			
+			numMovies++;
+		}
+	}
+	
+	for(i = 0; i < numMovies - 1; i++)
+	{
+		for(j = i + 1; j < numMovies; j++)
+		{
+			if(movies[i].totalSeats < movies[j].totalSeats)
+			{
+				char tempTitle[31];
+				int tempSeats;
+				
+				strcpy(tempTitle, movies[i].title);
+				tempSeats = movies[i].totalSeats;
+				
+				strcpy(movies[i].title, movies[j].title);
+				movies[i].totalSeats = movies[j].totalSeats;
+				
+				strcpy(movies[j].title, tempTitle);
+				movies[j].totalSeats = tempSeats;
+			}
+		}
+	}
+	
+	printf("Top 3 most watched movies for the day:\n");
+	for(i = 0; i < 3 && i < numMovies; i++)
+	{
+		printf("%d. %s - %d seats taken\n", i + 1, movies[i].title, movies[i].totalSeats);
+	}	
+}
+*/
+
 /* initializeTable initializes the seat labels for a cinema's show.
 @param nIndex - index of the cinema
 @param nIndex2 - index of the show
@@ -587,7 +645,8 @@ int main()
             searchTime(strTime); // search movie by time
             break;
          case 6:
-            saveExit(strFilename); 
+            saveExit(strFilename);
+            displayTopMovies();
             printf("Schedule saved successfully! Exiting program.\n");
             break;
          default:
