@@ -363,22 +363,19 @@ viewSched()
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-printTicket(int nTitle, 
-            int nTime, 
-            int nNumSeats, 
-            int nRow, 
-            int nCol, 
-            int nTicket)
+printTicket(int nTitle, int nTime, int nNumSeats, int nRow, int nCol, string seatName)
 {
    string strFilename;
    char cTicketNumber = '0';
    FILE *pFp;
 
    strcpy(strFilename, "");   // clear filename
-   strcpy(strFilename, "Ticket"); 
+   strcpy(strFilename, seatName);   // clear filename
    
-   cTicketNumber = '0' + nTicket;
-   strFilename[6] = cTicketNumber; //number of filename
+   //strcpy(strFilename, "Ticket"); 
+   
+   //cTicketNumber = '0' + nTicket;
+   //strFilename[6] = cTicketNumber; //number of filename
    
    strcat(strFilename, ".txt");   //file extension (text file)
    pFp = fopen(strFilename, "w");
@@ -410,6 +407,7 @@ selectSeat()
    int nValidSeats = 0, nValid = 0;
    int nTitleIndex = 0, nValidTime = 0;
    string strTitle, strShowingTime, strSeats[3];
+   string seatName;
 
    while (nValidTitle != 1)
    {
@@ -477,6 +475,7 @@ selectSeat()
          {
             if (strcmp(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], strSeats[k]) == 0)
             {
+               strcpy(seatName, arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j]);   
                strcpy(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], "X");
                nValid = 1;
                nValidSeats++;
@@ -492,7 +491,7 @@ selectSeat()
       if (nValid == 1)
       { 
          nValid = 0;
-         printTicket(nTitleIndex, nTimeIndex, nNumSeats, nRow, nCol, k); 
+         printTicket(nTitleIndex, nTimeIndex, nNumSeats, nRow, nCol, seatName); 
       }
       else if (nValid == 0)
       {
@@ -502,6 +501,7 @@ selectSeat()
 
     displayTable(nTitleIndex, nTimeIndex);
 }
+
 
 /* searchTitle searches for a movie title across all cinemas and displays its details.
 @param *pTitle - pointer to a string containing the movie title to search for
