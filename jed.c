@@ -42,7 +42,7 @@ struct sViewMovieTag // main tag: structure for showing movies (1 showing time =
 
 struct sMovieData
 {
-	string strMovieTitle;
+    string strMovieTitle;
 	int nTotalSeats;	
 };
 
@@ -57,8 +57,7 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 displayTopMovies()
 {
-	struct sMovieData arrMovies[MAX_CINEMAS];
-	
+    struct sMovieData arrMovies[MAX_CINEMAS];
 	int i, j, nTempSeats;
 	int nNumMovies = 0, nTotal = 0;
 	string strTempTitle;
@@ -367,18 +366,13 @@ viewSched()
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-printTicket(int nTitle, int nTime, int nNumSeats, int nRow, int nCol, string seatName)
+printTicket(int nTitle, int nTime, int nNumSeats, int nRow, int nCol, string strSeatName)
 {
    string strFilename;
    FILE *pFp;
 
    strcpy(strFilename, "");   // clear filename
-   strcpy(strFilename, seatName);   // clear filename
-   
-   //strcpy(strFilename, "Ticket"); 
-   
-   //cTicketNumber = '0' + nTicket;
-   //strFilename[6] = cTicketNumber; //number of filename
+   strcpy(strFilename, strSeatName);   // clear filename
    
    strcat(strFilename, ".txt");   //file extension (text file)
    pFp = fopen(strFilename, "w");
@@ -410,7 +404,7 @@ selectSeat()
    int nValidSeats = 0, nValid = 0;
    int nTitleIndex = 0, nValidTime = 0;
    string strTitle, strShowingTime, strSeats[3];
-   string seatName;
+   string strSeatName;
 
    while (nValidTitle != 1)
    {
@@ -478,7 +472,7 @@ selectSeat()
          {
             if (strcmp(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], strSeats[k]) == 0)
             {
-               strcpy(seatName, arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j]);   
+               strcpy(strSeatName, arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j]);   
                strcpy(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], "X");
                nValid = 1;
                nValidSeats++;
@@ -494,7 +488,7 @@ selectSeat()
       if (nValid == 1)
       { 
          nValid = 0;
-         printTicket(nTitleIndex, nTimeIndex, nNumSeats, nRow, nCol, seatName); 
+         printTicket(nTitleIndex, nTimeIndex, nNumSeats, nRow, nCol, strSeatName); 
       }
       else if (nValid == 0)
       {
