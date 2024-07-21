@@ -509,21 +509,33 @@ void
 searchTitle(char *pTitle)
 {
    int i, j;
+   int nFound = 0;
 
-   for (i = 0; i < MAX_CINEMAS; i++) 
+   while (!nFound)
    {
-      if (strlen(arrCinemas[i].sMovie.strTitle) > 0 && strcmp(arrCinemas[i].sMovie.strTitle, pTitle) == 0) 
-      {
-         printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
-         for (j = 0; j < MAX_SHOWINGS; j++) 
-         {
-            if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
-            {
-               printf("\tShow Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
-               printf("\tAvailable Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
-            }
-         }
-      }
+     printf("Enter Movie Title: ");
+     scanf(" %[^\n]s", pTitle);
+     
+     for (i = 0; i < MAX_CINEMAS; i++) 
+     {
+        if (strlen(arrCinemas[i].sMovie.strTitle) > 0 && strcmp(arrCinemas[i].sMovie.strTitle, pTitle) == 0) 
+        {
+           nFound = 1;
+           printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+           for (j = 0; j < MAX_SHOWINGS; j++) 
+           {
+              if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
+              {
+                 printf("\tShow Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+                 printf("\tAvailable Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
+              }
+           }
+        }
+     }
+     if (!nFound)
+     {
+        printf("Invalid movie title. Please try again.\n");
+     }
    }
 }
 
@@ -632,8 +644,6 @@ int main()
             selectSeat(); // select seats
             break;
          case 4:
-            printf("Enter Movie Title: ");
-            scanf(" %[^\n]s", strTitle);
             searchTitle(strTitle); // search movie by title
             break;
          case 5:
