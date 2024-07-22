@@ -8,9 +8,7 @@ Kyle Gabriel A. Maristela, DLSU ID# 12307777
 *********************************************************************************************************/
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #define MAX_CINEMAS 6
 #define MAX_SHOWINGS 6
@@ -366,7 +364,12 @@ viewSched()
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-printTicket(int nTitle, int nTime, int nNumSeats, int nRow, int nCol, string strSeatName)
+printTicket(int nTitle, 
+			int nTime, 
+			int nNumSeats, 
+			int nRow, 
+			int nCol, 
+			string strSeatName)
 {
    string strFilename;
    FILE *pFp;
@@ -509,9 +512,9 @@ void
 searchTitle(char *pTitle)
 {
    int i, j;
-   int nFound = 0;
+   int nValid = 0;
 
-   while (!nFound)
+   while (!nValid)
    {
      printf("Enter Movie Title: ");
      scanf(" %[^\n]s", pTitle);
@@ -520,7 +523,7 @@ searchTitle(char *pTitle)
      {
         if (strlen(arrCinemas[i].sMovie.strTitle) > 0 && strcmp(arrCinemas[i].sMovie.strTitle, pTitle) == 0) 
         {
-           nFound = 1;
+           nValid = 1;
            printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
            for (j = 0; j < MAX_SHOWINGS; j++) 
            {
@@ -532,35 +535,103 @@ searchTitle(char *pTitle)
            }
         }
      }
-     if (!nFound)
+     if (!nValid)
      {
         printf("Invalid movie title. Please try again.\n");
      }
    }
 }
 
-/* searchTime searches for a specific show time across all cinemas and displays matching details.
-@param *pTime - pointer to a string containing the show time to search for
+/*searchTimeRange searches for a specific show time, within the specified time range of the user, 
+across all cinemas and displays matching details.
+@param *pStartTime - pointer to a string containing the start time of the range
+@param *pEndTime - pointer to a string containing the end time of the range
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-searchTime(char *pTime)
+searchTimeRange(char *pStartTime, 
+				char *pEndTime)
 {
-   int i, j;
+	int i, j;
+    int nStartHr, nStartMin, nEndHr, nEndMin;
+    int nShowHr, nShowMin;
+    char cStartPeriod, cEndPeriod;
    
-   for (i = 0; i < MAX_CINEMAS; i++) 
-   {
-      for (j = 0; j < MAX_SHOWINGS; j++) 
-      {
-         if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0 && strcmp(arrCinemas[i].arrShow[j].strShowTime, pTime) == 0) 
-         {
-            printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
-            printf("  Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
-            printf("  Available Seats: %d\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
-         }
-      }
-   }
+    // Convert start and end times to minutes since midnight
+    sscanf(pStartTime, "%d:%d %c", &nStartHr, &nStartMin, &cStartPeriod);
+	
+    if (cStartPeriod == 'p')
+    {
+		if (nStartHr != 12)
+	    {
+			nStartHr += 12;
+		}
+	}
+	else if (cStartPeriod == 'a')
+	{
+		if (nStartHr == 12)
+	    {
+			nStartHr = 0;
+	    }
+    }
+   
+	nStartMin += nStartHr * 60;
+    sscanf(pEndTime, "%d:%d %c", &nEndHr, &nEndMin, &cEndPeriod);
+	
+    if (cEndPeriod == 'p')
+    {
+		if (nEndHr != 12)
+		{
+			nEndHr += 12;
+		}
+    }
+    else if (cEndPeriod == 'a')
+    {
+		if (nEndHr == 12)
+		{
+			nEndHr = 0;
+		}
+    }
+    
+	nEndMin += nEndHr * 60;
+    printf("Available show times from %s to %s:\n", pStartTime, pEndTime);
+   
+    for (i = 0; i < MAX_CINEMAS; i++) 
+    {
+		for (j = 0; j < MAX_SHOWINGS; j++) 
+        {
+			if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
+            {
+				// Convert show time to minutes since midnight
+				sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %c", &nShowHr, &nShowMin, &cStartPeriod);
+				
+				if (cStartPeriod == 'p')
+            	{
+					if (nShowHr != 12)
+			   		{
+						nShowHr += 12;
+					}
+            	}
+				else if (cStartPeriod == 'a')
+				{
+					if (nShowHr == 12)
+					{
+						nShowHr = 0;
+			   		}
+            	}
+            
+				nShowMin += nShowHr * 60;
+            
+				if (nShowMin >= nStartMin && nShowMin <= nEndMin) 
+            	{
+					printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+               		printf("  Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+               		printf("  Available Seats: %d\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
+            	}
+         	}
+      	}
+   	}
 }
 
 /* saveExit saves the current state of cinemas and their booked seats to a file.
@@ -607,7 +678,7 @@ int main()
 {
    int nChoice;
    string strFilename, strDate;
-   string strTitle, strTime;
+   string strTitle, strStartTime, strEndTime;;
    
    preLoadSched("MovieSched.txt");
    
@@ -647,9 +718,11 @@ int main()
             searchTitle(strTitle); // search movie by title
             break;
          case 5:
-            printf("Enter Show Time: ");
-            scanf(" %[^\n]s", strTime);
-            searchTime(strTime); // search movie by time
+            printf("Enter Start Time: ");
+            scanf(" %[^\n]s", strStartTime);
+            printf("Enter End Time: ");
+            scanf(" %[^\n]s", strEndTime);
+            searchTimeRange(strStartTime, strEndTime); // search movie by time range
             break;
          case 6:
             saveExit(strFilename);
