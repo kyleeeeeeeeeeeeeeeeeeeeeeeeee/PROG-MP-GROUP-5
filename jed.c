@@ -638,9 +638,9 @@ searchTimeRange(char *pStartTime,
 		if (!nValid)
 		{
 			printf("None. Please enter a new time range.\n");
-            printf("Start time (HH:MM AM/PM): ");
+            printf("Start time: ");
             scanf("%s", pStartTime);
-            printf("End time (HH:MM AM/PM): ");
+            printf("End time: ");
             scanf("%s", pEndTime);
 		}
 	}
