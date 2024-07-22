@@ -607,7 +607,7 @@ int main()
 {
    int nChoice;
    string strFilename, strDate;
-   char strTitle[31], strTime[31];
+   string strTitle[31], strTime[31];
    
    preLoadSched("MovieSched.txt");
    
