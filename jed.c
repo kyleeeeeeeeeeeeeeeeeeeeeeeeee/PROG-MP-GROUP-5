@@ -555,83 +555,95 @@ searchTimeRange(char *pStartTime,
 {
 	int i, j;
     int nStartHr, nStartMin, nEndHr, nEndMin;
-    int nShowHr, nShowMin;
+    int nShowHr, nShowMin, nValid = 0;
     char cStartPeriod, cEndPeriod;
-   
-    // Convert start and end times to minutes since midnight
-    sscanf(pStartTime, "%d:%d %c", &nStartHr, &nStartMin, &cStartPeriod);
+
+	while (!nValid)
+	{
+    	// Convert start and end times to minutes since midnight
+    	sscanf(pStartTime, "%d:%d %c", &nStartHr, &nStartMin, &cStartPeriod);
 	
-    if (cStartPeriod == 'p')
-    {
-		if (nStartHr != 12)
+    	if (cStartPeriod == 'p')
+    	{
+			if (nStartHr != 12)
+	    	{
+				nStartHr += 12;
+			}
+		}
+		else if (cStartPeriod == 'a')
+		{
+			if (nStartHr == 12)
+	    	{
+				nStartHr = 0;
+		    }
+    	}
+	
+		nStartMin += nStartHr * 60;
+    	sscanf(pEndTime, "%d:%d %c", &nEndHr, &nEndMin, &cEndPeriod);
+	
+    	if (cEndPeriod == 'p')
 	    {
-			nStartHr += 12;
+			if (nEndHr != 12)
+			{
+				nEndHr += 12;
+			}
+    	}
+    	else if (cEndPeriod == 'a')
+    	{
+			if (nEndHr == 12)
+			{
+				nEndHr = 0;
+			}
+    	}
+    
+		nEndMin += nEndHr * 60;
+    	printf("Available show times from %s to %s:\n", pStartTime, pEndTime);
+   
+    	for (i = 0; i < MAX_CINEMAS; i++) 
+    	{
+			for (j = 0; j < MAX_SHOWINGS; j++) 
+        	{
+				if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
+            	{
+					// Convert show time to minutes since midnight
+					sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %c", &nShowHr, &nShowMin, &cStartPeriod);
+				
+					if (cStartPeriod == 'p')
+            		{
+						if (nShowHr != 12)
+			   			{
+							nShowHr += 12;
+						}
+            		}
+					else if (cStartPeriod == 'a')
+					{
+						if (nShowHr == 12)
+						{
+							nShowHr = 0;
+			   			}
+            		}
+            
+					nShowMin += nShowHr * 60;
+            
+					if (nShowMin >= nStartMin && nShowMin <= nEndMin) 
+            		{
+						nValid = 1;
+						printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+               			printf("  Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+               			printf("  Available Seats: %d\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
+            		}
+         		}
+      		}		
+   		}
+		if (!nValid)
+		{
+			printf("None. Please enter a new time range.\n");
+            printf("Start time (HH:MM AM/PM): ");
+            scanf("%s", pStartTime);
+            printf("End time (HH:MM AM/PM): ");
+            scanf("%s", pEndTime);
 		}
 	}
-	else if (cStartPeriod == 'a')
-	{
-		if (nStartHr == 12)
-	    {
-			nStartHr = 0;
-	    }
-    }
-   
-	nStartMin += nStartHr * 60;
-    sscanf(pEndTime, "%d:%d %c", &nEndHr, &nEndMin, &cEndPeriod);
-	
-    if (cEndPeriod == 'p')
-    {
-		if (nEndHr != 12)
-		{
-			nEndHr += 12;
-		}
-    }
-    else if (cEndPeriod == 'a')
-    {
-		if (nEndHr == 12)
-		{
-			nEndHr = 0;
-		}
-    }
-    
-	nEndMin += nEndHr * 60;
-    printf("Available show times from %s to %s:\n", pStartTime, pEndTime);
-   
-    for (i = 0; i < MAX_CINEMAS; i++) 
-    {
-		for (j = 0; j < MAX_SHOWINGS; j++) 
-        {
-			if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
-            {
-				// Convert show time to minutes since midnight
-				sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %c", &nShowHr, &nShowMin, &cStartPeriod);
-				
-				if (cStartPeriod == 'p')
-            	{
-					if (nShowHr != 12)
-			   		{
-						nShowHr += 12;
-					}
-            	}
-				else if (cStartPeriod == 'a')
-				{
-					if (nShowHr == 12)
-					{
-						nShowHr = 0;
-			   		}
-            	}
-            
-				nShowMin += nShowHr * 60;
-            
-				if (nShowMin >= nStartMin && nShowMin <= nEndMin) 
-            	{
-					printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
-               		printf("  Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
-               		printf("  Available Seats: %d\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
-            	}
-         	}
-      	}
-   	}
 }
 
 /* saveExit saves the current state of cinemas and their booked seats to a file.
