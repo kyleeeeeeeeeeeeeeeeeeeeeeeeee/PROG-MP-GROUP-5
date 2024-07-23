@@ -369,12 +369,20 @@ printTicket(int nTitle,
 {
    string strFilename;
    FILE *pFp;
+   char cTitle, cTime;
 
    strcpy(strFilename, "");   // clear filename
-   strcpy(strFilename, arrCinemas[nTitle].sMovie.strTitle);
-   strcat(strFilename, "_"); 
-   strcat(strFilename, strSeatName);   
-   	
+   strcpy(strFilename, "Cinema");
+	
+   cTitle = nTitle + 49;
+   strFilename[6] = cTitle;
+	
+   strcat(strFilename, "_Show");
+   cTime = nTime + 49;
+	
+   strFilename[12] = cTime;
+   strcat(strFilename, strSeatName);  
+
    strcat(strFilename, ".txt");   //file extension (text file)
    pFp = fopen(strFilename, "w");
    
