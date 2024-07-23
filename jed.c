@@ -708,8 +708,8 @@ int main()
       printf("1. Load Schedule\n");
       printf("2. View Schedule\n");
       printf("3. Select Seats\n");
-      printf("4. Search Movie\n");
-      printf("5. Search Time\n");
+      printf("4. Search Movie Title\n");
+      printf("5. Search Movie Time\n");
       printf("6. Save and Exit\n");
       printf("\nEnter your choice: ");
       scanf("%d", &nChoice);
