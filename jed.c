@@ -188,7 +188,7 @@ displayTable(int nIndex,
       {
          printf("%s ", arrCinemas[nIndex].arrShow[nIndex2].arrSeats[nRow][nCol]);
       }
-      printf("\n\n");
+      printf("\n");
    }
 }
 
@@ -337,12 +337,12 @@ viewSched()
    {
       if (strlen(arrCinemas[i].sMovie.strTitle) > 0) 
       {
-         printf("\nCinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+         printf("\nCinema %d: %s\n\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
          for (j = 0; j < MAX_SHOWINGS; j++) 
          {
             if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
             {
-               printf("Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+               printf("   Showing time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
             }
          }
       }
@@ -375,14 +375,14 @@ printTicket(int nTitle,
    strcat(strFilename, "_");  
    strcat(strFilename, arrCinemas[nTitle].arrShow[nTime].strShowTime);  
    strcat(strFilename, "_");   
-   strcat(strFilename, strSeatName);   
-   
+   strcpy(strFilename, strSeatName);   
+   	
    strcat(strFilename, ".txt");   //file extension (text file)
    pFp = fopen(strFilename, "w");
    
    if (strcmp(arrCinemas[nTitle].arrShow[nTime].arrSeats[nRow][nCol], "X") == 0)
    {
-      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema + 1);
+      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema);
       fprintf(pFp, "%s\n", arrCinemas[nTitle].sMovie.strTitle);
       fprintf(pFp, "%s\n", arrCinemas[nTitle].arrShow[nTime].strShowTime);
       fprintf(pFp, "%c%d\n", nRow + 65, nCol + 1);
@@ -424,7 +424,7 @@ selectSeat()
       }
    }
    
-   printf("\nShowing times of %s:\n", arrCinemas[nTitleIndex].sMovie.strTitle);
+   printf("\nShowing times for %s:\n", arrCinemas[nTitleIndex].sMovie.strTitle);
    
    for (j = 0; j < 6; j++)
    {
@@ -461,7 +461,7 @@ selectSeat()
    {
       printf("\nEnter number of seats: ");
       scanf("%d", &nNumSeats); 
-   } while (!(nNumSeats > 0 && nNumSeats < 4)); // can reserve up to 3 seats only
+   } while (!(nNumSeats > 0 && nNumSeats < 5)); // can reserve up to 4 seats only
    
    do 
    {
@@ -515,7 +515,7 @@ searchTitle(char *pTitle)
 
    while (!nValid)
    {
-     printf("Enter Movie Title: ");
+     printf("\nEnter Movie Title: ");
      scanf(" %[^\n]s", pTitle);
      
      for (i = 0; i < MAX_CINEMAS; i++) 
@@ -523,20 +523,21 @@ searchTitle(char *pTitle)
         if (strlen(arrCinemas[i].sMovie.strTitle) > 0 && strcmp(arrCinemas[i].sMovie.strTitle, pTitle) == 0) 
         {
            nValid = 1;
-           printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+           printf("\nCinema %d: %s\n\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
            for (j = 0; j < MAX_SHOWINGS; j++) 
            {
               if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
               {
-                 printf("\tShow Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
-                 printf("\tAvailable Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
+                 printf("   Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+                 printf("   Available Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
               }
            }
         }
      }
      if (!nValid)
      {
-        printf("Invalid movie title. Please try again.\n");
+		printf("\n");
+        printf("   Invalid movie title! Please try again.\n");
      }
    }
 }
@@ -596,7 +597,7 @@ searchTimeRange(char *pStartTime,
     	}
     
 		nEndMin += nEndHr * 60;
-    	printf("Available show times from %s to %s:\n", pStartTime, pEndTime);
+    	printf("\nAvailable show times from %s to %s:\n\n", pStartTime, pEndTime);
    
     	for (i = 0; i < MAX_CINEMAS; i++) 
     	{
@@ -627,19 +628,19 @@ searchTimeRange(char *pStartTime,
 					if (nShowMin >= nStartMin && nShowMin <= nEndMin) 
             		{
 						nValid = 1;
-						printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
-               			printf("  Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
-               			printf("  Available Seats: %d\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
+						printf("Cinema %d: %s\n\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+               			printf("   Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
+               			printf("   Available Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
             		}
          		}
       		}		
    		}
 		if (!nValid)
 		{
-			printf("None. Please enter a new time range.\n");
-            printf("Start time: ");
+			printf("   None! Please enter a new time range.\n");
+            printf("\nStart time: ");
             scanf("%s", pStartTime);
-            printf("End time: ");
+            printf("\nEnd time: ");
             scanf("%s", pEndTime);
 		}
 	}
@@ -729,9 +730,9 @@ int main()
             searchTitle(strTitle); // search movie by title
             break;
          case 5:
-            printf("Enter Start Time: ");
+            printf("\nEnter Start Time: ");
             scanf(" %[^\n]s", strStartTime);
-            printf("Enter End Time: ");
+            printf("\nEnter End Time: ");
             scanf(" %[^\n]s", strEndTime);
             searchTimeRange(strStartTime, strEndTime); // search movie by time range
             break;
@@ -741,7 +742,8 @@ int main()
             printf("Schedule saved successfully! Exiting program.\n");
             break;
          default:
-            printf("Invalid choice! Please enter a valid number.\n");
+			printf("\n");
+            printf("   Invalid choice! Please enter a valid number.\n");
             break;
       }
    } while (nChoice != 6); // Continue until the user chooses to exit
