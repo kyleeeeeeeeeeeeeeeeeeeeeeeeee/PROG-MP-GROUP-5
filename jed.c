@@ -378,7 +378,7 @@ printTicket(int nTitle,
    
    if (strcmp(arrCinemas[nTitle].arrShow[nTime].arrSeats[nRow][nCol], "X") == 0)
    {
-      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema + 1);
+      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema);
       fprintf(pFp, "%s\n", arrCinemas[nTitle].sMovie.strTitle);
       fprintf(pFp, "%s\n", arrCinemas[nTitle].arrShow[nTime].strShowTime);
       fprintf(pFp, "%c%d\n", nRow + 65, nCol + 1);
