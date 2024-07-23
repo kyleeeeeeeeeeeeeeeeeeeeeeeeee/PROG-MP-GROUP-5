@@ -581,14 +581,14 @@ searchTimeRange(char *pStartTime,
 		nStartMin += nStartHr * 60;
     	sscanf(pEndTime, "%d:%d %c", &nEndHr, &nEndMin, &cEndPeriod);
 	
-    	if (cEndPeriod == 'p')
+    	if (cEndPeriod == 'p' || cEndPeriod == 'P')
 	    {
 			if (nEndHr != 12)
 			{
 				nEndHr += 12;
 			}
     	}
-    	else if (cEndPeriod == 'a')
+    	else if (cEndPeriod == 'a' || cEndPeriod == 'A')
     	{
 			if (nEndHr == 12)
 			{
@@ -608,14 +608,14 @@ searchTimeRange(char *pStartTime,
 					// Convert show time to minutes since midnight
 					sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %c", &nShowHr, &nShowMin, &cStartPeriod);
 				
-					if (cStartPeriod == 'p')
+					if (cStartPeriod == 'p' || cStartPeriod == 'P')
             		{
 						if (nShowHr != 12)
 			   			{
 							nShowHr += 12;
 						}
             		}
-					else if (cStartPeriod == 'a')
+					else if (cStartPeriod == 'a' || cStartPeriod == 'A')
 					{
 						if (nShowHr == 12)
 						{
