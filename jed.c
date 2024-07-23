@@ -55,50 +55,46 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 displayTopMovies()
 {
-    struct sMovieData arrMovies[MAX_CINEMAS];
-	int i, j, nTempSeats;
-	int nNumMovies = 0, nTotal = 0;
-	string strTempTitle;
-	
-	for(i = 0; i < MAX_CINEMAS; i++)
-	{
-		if(strlen(arrCinemas[i].sMovie.strTitle) > 0)
-		{
-			for(j = 0; j < MAX_SHOWINGS; j++)
-			{
-				nTotal += arrCinemas[i].arrShow[j].nTakenSeats;
-			}
-			
-			strcpy(arrMovies[nNumMovies].strMovieTitle, arrCinemas[i].sMovie.strTitle);
-			arrMovies[nNumMovies].nTotalSeats = nTotal;
-			
-			nNumMovies++;
-		}
-	}
-	
-	for(i = 0; i < nNumMovies - 1; i++)
-	{
-		for(j = i + 1; j < nNumMovies; j++)
-		{
-			if(arrMovies[i].nTotalSeats < arrMovies[j].nTotalSeats)
-			{	
-				strcpy(strTempTitle, arrMovies[i].strMovieTitle);
-				nTempSeats = arrMovies[i].nTotalSeats;
-				
-				strcpy(arrMovies[i].strMovieTitle, arrMovies[j].strMovieTitle);
-				arrMovies[i].nTotalSeats = arrMovies[j].nTotalSeats;
-				
-				strcpy(arrMovies[j].strMovieTitle, strTempTitle);
-				arrMovies[j].nTotalSeats = nTempSeats;
-			}
-		}
-	}
-	
-	printf("Top 3 most watched movies for the day:\n");
-	for(i = 0; i < 3 && i < nNumMovies; i++)
-	{
-		printf("%d. %s - %d seats taken\n", i + 1, arrMovies[i].strMovieTitle, arrMovies[i].nTotalSeats);
-	}	
+   int i, j;
+   int totalSeats[6] = {};
+   int min;
+   struct sViewMovieTag temp;
+   int nTemp;
+   
+   for(i = 0; i < MAX_CINEMAS; i++)
+   {
+      for(j = 0; j < MAX_SHOWINGS; j++)
+      {
+         totalSeats[i] += arrCinemas[i].arrShow[j].nTakenSeats;
+      }
+   }
+
+   for(i = 0; i < MAX_CINEMAS - 1; i++)
+   {
+      min=i;
+      for(j = i + 1; j < MAX_SHOWINGS; j++)
+      {
+         if(totalSeats[j] > totalSeats[min])
+            min = j;
+
+         if(min != i){
+            temp = arrCinemas[i];
+            arrCinemas[i] = arrCinemas[min];
+            arrCinemas[min] = temp;
+
+            nTemp = totalSeats[i];
+            totalSeats[i] = totalSeats[min];
+            totalSeats[min] = nTemp;
+         }
+            
+      }
+   }
+   
+   printf("Top 3 most watched movies for the day:\n");
+   for(i = 0; i < 3; i++)
+   {
+      printf("%d. %s - %d seats taken\n", i+1, arrCinemas[i].sMovie.strTitle, totalSeats[i]);
+   }  
 }
 
 /* initializeTable initializes the seat labels for a cinema's show.
