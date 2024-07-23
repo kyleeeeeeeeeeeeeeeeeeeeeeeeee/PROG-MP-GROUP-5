@@ -57,7 +57,6 @@ displayTopMovies()
 {
    int i, j;
    int totalSeats[6] = {};
-   int min;
    struct sViewMovieTag temp;
    int nTemp;
    
@@ -71,20 +70,16 @@ displayTopMovies()
 
    for(i = 0; i < MAX_CINEMAS - 1; i++)
    {
-      min=i;
       for(j = i + 1; j < MAX_SHOWINGS; j++)
       {
-         if(totalSeats[j] > totalSeats[min])
-            min = j;
+         if(totalSeats[j] > totalSeats[i]){
+            nTemp = totalSeats[j];
+            totalSeats[j] = totalSeats[i];
+            totalSeats[i] = nTemp;
 
-         if(min != i){
-            temp = arrCinemas[i];
-            arrCinemas[i] = arrCinemas[min];
-            arrCinemas[min] = temp;
-
-            nTemp = totalSeats[i];
-            totalSeats[i] = totalSeats[min];
-            totalSeats[min] = nTemp;
+            temp = arrCinemas[j];
+            arrCinemas[j] = arrCinemas[i];
+            arrCinemas[i] = temp;
          }
             
       }
