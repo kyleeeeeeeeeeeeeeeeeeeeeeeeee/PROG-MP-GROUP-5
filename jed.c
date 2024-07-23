@@ -180,7 +180,8 @@ displayTable(int nIndex,
              int nIndex2)
 {
    int nRow, nCol;
-   
+	
+   printf("\n");	
    for (nRow = 0; nRow < 5; nRow++)
    {
       for (nCol = 0; nCol < 10; nCol++)
@@ -336,7 +337,7 @@ viewSched()
    {
       if (strlen(arrCinemas[i].sMovie.strTitle) > 0) 
       {
-         printf("Cinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
+         printf("\nCinema %d: %s\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
          for (j = 0; j < MAX_SHOWINGS; j++) 
          {
             if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
@@ -345,7 +346,6 @@ viewSched()
             }
          }
       }
-      printf("\n");
     }
 }
 
@@ -407,7 +407,7 @@ selectSeat()
 
    while (nValidTitle != 1)
    {
-      printf("Enter Movie Title: ");
+      printf("\nEnter movie title: ");
       scanf(" %[^\n]s", strTitle);
       
       for (i = 0; i < 6; i++)
@@ -420,8 +420,7 @@ selectSeat()
       }
    }
    
-   printf("Movie Title: %s\n", arrCinemas[nTitleIndex].sMovie.strTitle);
-   printf("Showing Times:\n");
+   printf("\nShowing times of %s:\n", arrCinemas[nTitleIndex].sMovie.strTitle);
    
    for (j = 0; j < 6; j++)
    {
@@ -432,7 +431,7 @@ selectSeat()
    
    do
    {
-      printf("Enter Showing Time: ");
+      printf("\nEnter showing time: ");
       scanf(" %[^\n]s", strShowingTime);
       
       for (i = 0; i < 6; i++)
@@ -456,13 +455,13 @@ selectSeat()
 
    do
    {
-      printf("\nEnter Number of Seats: ");
+      printf("\nEnter number of seats: ");
       scanf("%d", &nNumSeats); 
    } while (!(nNumSeats > 0 && nNumSeats < 4)); // can reserve up to 3 seats only
    
    do 
    {
-      printf("\nEnter Seat[%d]: ", k + 1);
+      printf("\nEnter seat[%d]: ", k + 1);
       scanf("%s", strSeats[k]);
 
       for (i = 0; i < 5; i++)
@@ -491,7 +490,7 @@ selectSeat()
       }
       else if (nValid == 0)
       {
-         printf("\nSeat Taken! Please choose again");
+         printf("\nSeat taken! Please choose again.");
       }
     } while (!(k == nNumSeats));
 
@@ -690,7 +689,7 @@ int main()
    
    preLoadSched("MovieSched.txt");
    
-   printf("Enter Date Today(dd-mm-yyyy): "); // for save on exit function
+   printf("\nEnter Date Today(dd-mm-yyyy): "); // for save on exit function
    scanf(" %[^\n]s", strDate);
    
    strcpy(strFilename, "show-");
@@ -706,7 +705,7 @@ int main()
       printf("4. Search Movie\n");
       printf("5. Search Time\n");
       printf("6. Save and Exit\n");
-      printf("Enter your choice: ");
+      printf("\nEnter your choice: ");
       scanf("%d", &nChoice);
       getchar(); // Consume newline left by scanf
       
