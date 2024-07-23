@@ -689,7 +689,7 @@ saveExit(char *pFilename)
 
 int main() 
 {
-   int nChoice;
+   int nChoice, nMovie;
    string strFilename, strDate;
    string strTitle, strStartTime, strEndTime;;
    
@@ -708,9 +708,8 @@ int main()
       printf("1. Load Schedule\n");
       printf("2. View Schedule\n");
       printf("3. Select Seats\n");
-      printf("4. Search Movie Title\n");
-      printf("5. Search Movie Time\n");
-      printf("6. Save and Exit\n");
+      printf("4. Search Movie\n");
+      printf("5. Save and Exit\n");
       printf("\nEnter your choice: ");
       scanf("%d", &nChoice);
       getchar(); // Consume newline left by scanf
@@ -727,17 +726,30 @@ int main()
          case 3:
             selectSeat(); // select seats
             break;
-         case 4:
-            searchTitle(strTitle); // search movie by title
+         case 4: 
+         	printf("\n1. Search movie by title\n");
+      		printf("2. Search Movie by time\n");
+         	printf("\nEnter your choice: ");
+      		scanf("%d", &nMovie);
+			switch (nMovie)
+			{
+				case 1:
+					searchTitle(strTitle); // search movie by title
+            		break;
+				case 2:
+					printf("\nEnter Start Time: ");
+	            	scanf(" %[^\n]s", strStartTime);
+	            	printf("\nEnter End Time: ");
+	            	scanf(" %[^\n]s", strEndTime);
+	            	searchTimeRange(strStartTime, strEndTime); // search movie by time range
+	            	break;
+	            default:
+	            	printf("\n");
+            		printf("   Invalid choice! Please enter a valid number.\n");
+            		break;
+			}
             break;
          case 5:
-            printf("\nEnter Start Time: ");
-            scanf(" %[^\n]s", strStartTime);
-            printf("\nEnter End Time: ");
-            scanf(" %[^\n]s", strEndTime);
-            searchTimeRange(strStartTime, strEndTime); // search movie by time range
-            break;
-         case 6:
             saveExit(strFilename);
             displayTopMovies();
             printf("Schedule saved successfully! Exiting program.\n");
@@ -747,7 +759,7 @@ int main()
             printf("   Invalid choice! Please enter a valid number.\n");
             break;
       }
-   } while (nChoice != 6); // Continue until the user chooses to exit
+   } while (nChoice != 5); // Continue until the user chooses to exit
    
    return 0;
 }
