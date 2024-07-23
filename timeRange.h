@@ -1,3 +1,10 @@
+struct TimeRangeTag{
+   int Number;
+   string Title;
+   string Time;
+   int Seats;
+};
+
 void 
 searchTimeRange()
 {
