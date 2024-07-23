@@ -371,14 +371,18 @@ printTicket(int nTitle,
    FILE *pFp;
 
    strcpy(strFilename, "");   // clear filename
-   strcpy(strFilename, strSeatName);   // clear filename
+   strcpy(strFilename, arrCinemas[nTitle].sMovie.strTitle);
+   strcat(strFilename, "_");  
+   strcat(strFilename, arrCinemas[nTitle].arrShow[nTime].strShowTime);  
+   strcat(strFilename, "_");   
+   strcat(strFilename, strSeatName);   
    
    strcat(strFilename, ".txt");   //file extension (text file)
    pFp = fopen(strFilename, "w");
    
    if (strcmp(arrCinemas[nTitle].arrShow[nTime].arrSeats[nRow][nCol], "X") == 0)
    {
-      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema);
+      fprintf(pFp, "%d\n", arrCinemas[nTitle].sMovie.nNumCinema + 1);
       fprintf(pFp, "%s\n", arrCinemas[nTitle].sMovie.strTitle);
       fprintf(pFp, "%s\n", arrCinemas[nTitle].arrShow[nTime].strShowTime);
       fprintf(pFp, "%c%d\n", nRow + 65, nCol + 1);
