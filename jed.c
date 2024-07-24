@@ -55,16 +55,15 @@ Pre-condition: cinemas is a global structure with appropriate fields.
 void 
 displayTopMovies()
 {
-   int i, j;
-   int totalSeats[6] = {};
+   int i, j, nTemp;
+   int arrTotalSeats[6] = {};
    struct sViewMovieTag temp;
-   int nTemp;
    
    for(i = 0; i < MAX_CINEMAS; i++)
    {
       for(j = 0; j < MAX_SHOWINGS; j++)
       {
-         totalSeats[i] += arrCinemas[i].arrShow[j].nTakenSeats;
+         arrTotalSeats[i] += arrCinemas[i].arrShow[j].nTakenSeats;
       }
    }
 
@@ -72,10 +71,10 @@ displayTopMovies()
    {
       for(j = i + 1; j < MAX_SHOWINGS; j++)
       {
-         if(totalSeats[j] > totalSeats[i]){
-            nTemp = totalSeats[j];
-            totalSeats[j] = totalSeats[i];
-            totalSeats[i] = nTemp;
+         if(arrTotalSeats[j] > arrTotalSeats[i]){
+            nTemp = arrTotalSeats[j];
+            arrTotalSeats[j] = arrTotalSeats[i];
+            arrTotalSeats[i] = nTemp;
 
             temp = arrCinemas[j];
             arrCinemas[j] = arrCinemas[i];
@@ -88,7 +87,7 @@ displayTopMovies()
    printf("Top 3 most watched movies for the day:\n");
    for(i = 0; i < 3; i++)
    {
-      printf("%d. %s - %d seats taken\n", i+1, arrCinemas[i].sMovie.strTitle, totalSeats[i]);
+      printf("%d. %s - %d seats taken\n", i+1, arrCinemas[i].sMovie.strTitle, arrTotalSeats[i]);
    }  
 }
 
@@ -209,7 +208,7 @@ preLoadSched(char *pFilename)
    }   
    else
    {
-      printf("Data has been successfully imported\n");
+      printf("Data has been successfully pre-loaded!\n");
       fscanf(pFp, "%[^\n]\n", strLine);
       
       for (j = 0; j < 6; j++)
@@ -219,7 +218,7 @@ preLoadSched(char *pFilename)
             nCinemaIndex = strLine[0] - 48; 
             if (nCinemaIndex > MAX_CINEMAS) 
             {
-                    printf("Cinema index %d out of bounds\n", nCinemaIndex);
+                    printf("Cinema index %d out of bounds!\n", nCinemaIndex);
                     fclose(pFp);
             }
             else if (nCinemaIndex > 0 && nCinemaIndex < 7)
@@ -265,19 +264,21 @@ loadSched()
    string strFilename;
    
    FILE *pFp; 
-   printf("Enter filename: ");
+   printf("\nEnter filename: ");
    scanf("%s", strFilename);
    pFp = fopen(strFilename, "r");
 
    while (pFp == NULL) 
    {
-      printf("Unable to open file. Please input filename again:\n");
+   	  printf("\n");
+      printf("   Unable to open file! Please input a valid filename.\n");
+   	  printf("\nEnter filename: ");
       scanf("%s", strFilename);
       pFp = fopen(strFilename, "r");     
    }
    if (pFp != NULL)
    {
-      printf("Data has been successfully imported\n");
+      printf("\nData has been successfully loaded!\n");
       fscanf(pFp, "%[^\n]\n", strLine);
       
       for (j = 0; j < 6; j++)
@@ -429,7 +430,8 @@ selectSeat()
    
    for (j = 0; j < 6; j++)
    {
-      printf("\n%s", arrCinemas[nTitleIndex].arrShow[j].strShowTime);
+   	  printf("\n");
+      printf("\t%s", arrCinemas[nTitleIndex].arrShow[j].strShowTime);
    }
    
    printf("\n");
@@ -445,7 +447,8 @@ selectSeat()
          {
             if (arrCinemas[nTitleIndex].arrShow[i].nTakenSeats == 50)
             {
-               printf("Sorry, all seats are taken.\n");
+               printf("\n");
+               printf("   Sorry! All seats are taken.\n");
             }
             else if (arrCinemas[nTitleIndex].arrShow[i].nTakenSeats < 50)
             {
@@ -495,7 +498,8 @@ selectSeat()
       }
       else if (nValid == 0)
       {
-         printf("\nSeat taken! Please choose again.");
+      	 printf("\n");
+         printf("   Seat taken! Please choose again.\n");
       }
     } while (!(k == nNumSeats));
 
@@ -718,7 +722,6 @@ int main()
       {
          case 1:
             loadSched();
-            printf("Schedule loaded successfully!\n");
             break;
          case 2:
             viewSched(); // view available schedule
