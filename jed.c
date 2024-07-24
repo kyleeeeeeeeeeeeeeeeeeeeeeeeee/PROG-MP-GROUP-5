@@ -669,20 +669,33 @@ searchTimeRange()
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
-void 
-saveExit(char *pFilename)
+void saveExit(char *pFilename)
 {  
    int i, j, k, l;
+   int arrTotalSeats[6] = {};
    FILE *pFp = fopen(pFilename, "w");
+
+   for(i = 0; i < MAX_CINEMAS; i++)
+   {
+      for(j = 0; j < MAX_SHOWINGS; j++)
+      {
+         arrTotalSeats[i] += arrCinemas[i].arrShow[j].nTakenSeats;
+      }
+   }
 
    for (i = 0; i < MAX_CINEMAS; i++) 
    {
+      if (arrTotalSeats[i] > 0){
+         if (i!=0)
+            fprintf(pFp, "\n"); // for formatting purposes
+            
+         fprintf(pFp, "Cinema No: %d\n", arrCinemas[i].sMovie.nNumCinema);
+         fprintf(pFp, "Title: %s\n", arrCinemas[i].sMovie.strTitle);
+      }
       for (j = 0; j < MAX_SHOWINGS; j++)
       {
          if (arrCinemas[i].arrShow[j].nTakenSeats > 0)
          {
-            fprintf(pFp, "Cinema No: %d\n", arrCinemas[i].sMovie.nNumCinema);
-            fprintf(pFp, "Title: %s\n", arrCinemas[i].sMovie.strTitle);
             fprintf(pFp, "Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
             fprintf(pFp, "Taken Seats:\n");
             
@@ -700,6 +713,7 @@ saveExit(char *pFilename)
             fprintf(pFp, "\n\n"); // for formatting purposes
          }
       }
+      
    }
    fclose(pFp);
 }
