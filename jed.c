@@ -408,126 +408,110 @@ then reserves the selected seats.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-searchTimeRange(char *pStartTime, 
-				char *pEndTime)
+selectSeat()
 {
-	int i, j, cinemaId, showId;
-    int nStartHr, nStartMin, nEndHr, nEndMin;
-    int nShowHr, nShowMin, nValid = 0, nCount = 0;
-    char cStartPeriod, cEndPeriod;
-    struct sValidShowing arrValidShows[MAX_CINEMAS * MAX_SHOWINGS];
-    struct sValidShowing temp;
+   int nRow, nCol;
+   int i, j, k = 0;
+   int nValidTitle = 0;
+   int nNumSeats, nTimeIndex;
+   int nValidSeats = 0, nValid = 0;
+   int nTitleIndex = 0, nValidTime = 0;
+   string strTitle, strShowingTime, strSeats[3];
+   string strSeatName;
 
-	while (!nValid)
-	{
-    	// Convert start and end times to minutes since midnight
-    	sscanf(pStartTime, "%d:%d %c", &nStartHr, &nStartMin, &cStartPeriod);
-	
-    	if (cStartPeriod == 'p')
-    	{
-			if (nStartHr != 12)
-	    	{
-				nStartHr += 12;
-			}
-		}
-		else if (cStartPeriod == 'a')
-		{
-			if (nStartHr == 12)
-	    	{
-				nStartHr = 0;
-		    }
-    	}
-	
-		nStartMin += nStartHr * 60;
-    	sscanf(pEndTime, "%d:%d %c", &nEndHr, &nEndMin, &cEndPeriod);
-	
-    	if (cEndPeriod == 'p' || cEndPeriod == 'P')
-	    {
-			if (nEndHr != 12)
-			{
-				nEndHr += 12;
-			}
-    	}
-    	else if (cEndPeriod == 'a' || cEndPeriod == 'A')
-    	{
-			if (nEndHr == 12)
-			{
-				nEndHr = 0;
-			}
-    	}
-    
-		nEndMin += nEndHr * 60;
-    	printf("\nAvailable show times from %s to %s:\n\n", pStartTime, pEndTime);
+   while (nValidTitle != 1)
+   {
+      printf("\nEnter movie title: ");
+      scanf(" %[^\n]s", strTitle);
+      
+      for (i = 0; i < 6; i++)
+      {
+         if (strcmp(strTitle, arrCinemas[i].sMovie.strTitle) == 0)
+         {
+            nValidTitle = 1;
+            nTitleIndex = i;
+         }
+      }
+   }
    
-    	for (i = 0; i < MAX_CINEMAS; i++) 
-    	{
-			for (j = 0; j < MAX_SHOWINGS; j++) 
-        	{
-				if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
-            	{
-					// Convert show time to minutes since midnight
-					sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %c", &nShowHr, &nShowMin, &cStartPeriod);
-				
-					if (cStartPeriod == 'p' || cStartPeriod == 'P')
-            		{
-						if (nShowHr != 12)
-			   			{
-							nShowHr += 12;
-						}
-            		}
-					else if (cStartPeriod == 'a' || cStartPeriod == 'A')
-					{
-						if (nShowHr == 12)
-						{
-							nShowHr = 0;
-			   			}
-            		}
-            
-					nShowMin += nShowHr * 60;
-            
-					if (nShowMin >= nStartMin && nShowMin <= nEndMin) 
-            		{
-            			arrValidShows[nCount].nCinemaIndex = i;
-            			arrValidShows[nCount].nShowIndex = j;
-            			arrValidShows[nCount].nTotalMins = nShowMin;
-            			nCount++;
-            			nValid = 1;
-            		}
-         		}
-      		}		
-   		}
-		if (!nValid)
-		{
-			printf("   None! Please enter a new time range.\n");
-            printf("\nStart time: ");
-            scanf("%s", pStartTime);
-            printf("\nEnd time: ");
-            scanf("%s", pEndTime);
-		}
-		
-		for (i = 0; i < nCount; i++)
-		{
-			for (j = i + 1; j < nCount; j++)
-			{
-				if (arrValidShows[i].nTotalMins > arrValidShows[j].nTotalMins)
-				{
-					temp = arrValidShows[i];
-					arrValidShows[i] = arrValidShows[j];
-					arrValidShows[j] = temp;
-				}
-			}
-		}
-		
-		for (i = 0; i < nCount; i++)
-		{
-			cinemaId = arrValidShows[i].nCinemaIndex; 
-			showId = arrValidShows[i].nShowIndex;
-			
-           	printf("Show Time: %s\n\n", arrCinemas[cinemaId].arrShow[showId].strShowTime);
-			printf("   Cinema %d: %s\n", arrCinemas[cinemaId].sMovie.nNumCinema, arrCinemas[cinemaId].sMovie.strTitle);
-            printf("   Available Seats: %d\n\n", MAX_SEATS - arrCinemas[cinemaId].arrShow[showId].nTakenSeats);
-		}
-	}
+   printf("\nShowing times for %s:\n", arrCinemas[nTitleIndex].sMovie.strTitle);
+   
+   for (j = 0; j < 6; j++)
+   {
+   	  printf("\n");
+      printf("\t%s", arrCinemas[nTitleIndex].arrShow[j].strShowTime);
+   }
+   
+   printf("\n");
+   
+   do
+   {
+      printf("\nEnter showing time: ");
+      scanf(" %[^\n]s", strShowingTime);
+      
+      for (i = 0; i < 6; i++)
+      {
+         if (strcmp(arrCinemas[nTitleIndex].arrShow[i].strShowTime, strShowingTime) == 0)
+         {
+            if (arrCinemas[nTitleIndex].arrShow[i].nTakenSeats == 50)
+            {
+               printf("\n");
+               printf("   Sorry! All seats are taken.\n");
+            }
+            else if (arrCinemas[nTitleIndex].arrShow[i].nTakenSeats < 50)
+            {
+               nValidTime = 1;
+               nTimeIndex = i;
+            }
+         }
+      }
+   } while (nValidTime != 1);
+   
+   displayTable(nTitleIndex, nTimeIndex);
+
+   do
+   {
+      printf("\nEnter number of seats: ");
+      scanf("%d", &nNumSeats); 
+   } while (!(nNumSeats > 0 && nNumSeats < 5)); // can reserve up to 4 seats only
+   
+   do 
+   {
+      printf("\nEnter seat[%d]: ", k + 1);
+      scanf("%s", strSeats[k]);
+
+      for (i = 0; i < 5; i++)
+      {
+         for (j = 0; j < 10; j++)
+         {
+            if (strcmp(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], strSeats[k]) == 0)
+            {
+               strcpy(strSeatName, arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j]);   
+               strcpy(arrCinemas[nTitleIndex].arrShow[nTimeIndex].arrSeats[i][j], "X");
+               nValid = 1;
+               nValidSeats++;
+               nRow = i;
+               nCol = j;
+               k++;
+               arrCinemas[nTitleIndex].arrShow[nTimeIndex].nTakenSeats++;
+               i = i + 5;
+               j = j + 10;
+            }
+         }
+      }
+      if (nValid == 1)
+      { 
+         nValid = 0;
+         printTicket(nTitleIndex, nTimeIndex, nNumSeats, nRow, nCol, strSeatName); 
+      }
+      else if (nValid == 0)
+      {
+      	 printf("\n");
+         printf("   Seat taken! Please choose again.\n");
+      }
+    } while (!(k == nNumSeats));
+
+    displayTable(nTitleIndex, nTimeIndex);
 }
 
 /* searchTitle searches for a movie title across all cinemas and displays its details.
@@ -572,61 +556,53 @@ searchTitle(char *pTitle)
 
 /*searchTimeRange searches for a specific show time, within the specified time range of the user, 
 across all cinemas and displays matching details.
-@param *pStartTime - pointer to a string containing the start time of the range
-@param *pEndTime - pointer to a string containing the end time of the range
+@param none - This function does not have a parameter
 @return void - This function does not return a value.
 Pre-condition: cinemas is a global structure with appropriate fields.
 */
 void 
-searchTimeRange(char *pStartTime, 
-				char *pEndTime)
+searchTimeRange()
 {
-	int i, j;
+	int i, j, cinemaId, showId;
     int nStartHr, nStartMin, nEndHr, nEndMin;
-    int nShowHr, nShowMin, nValid = 0;
-    char cStartPeriod, cEndPeriod;
+    int nShowHr, nShowMin, nValid = 0, nCount = 0;
+    char cWord[3], cWord2[3];
+    struct sValidShowing arrValidShows[MAX_CINEMAS * MAX_SHOWINGS];
+    struct sValidShowing temp;
 
 	while (!nValid)
 	{
-    	// Convert start and end times to minutes since midnight
-    	sscanf(pStartTime, "%d:%d %c", &nStartHr, &nStartMin, &cStartPeriod);
+		printf("\nEnter start time (hh:mm am/pm): ");
+		scanf("%d:%d %s", &nStartHr, &nStartMin, cWord);
+		
+		printf("\nEnter end time (hh:mm am/pm): ");
+		scanf("%d:%d %s", &nEndHr, &nEndMin, cWord2);
+		
+		printf("\nAvailable show times from %02d:%02d%s to %02d:%02d%s:\n\n", nStartHr, nStartMin, cWord, nEndHr, nEndMin, cWord2);
 	
-    	if (cStartPeriod == 'p')
-    	{
-			if (nStartHr != 12)
-	    	{
-				nStartHr += 12;
-			}
-		}
-		else if (cStartPeriod == 'a')
+		if (strcmp(cWord, "pm") == 0 && nStartHr != 12)
 		{
-			if (nStartHr == 12)
-	    	{
-				nStartHr = 0;
-		    }
+			nStartHr += 12;
+		}
+		else if (strcmp(cWord, "am") == 0 && nStartHr == 12)
+		{
+			nStartHr = 0;
     	}
 	
 		nStartMin += nStartHr * 60;
-    	sscanf(pEndTime, "%d:%d %c", &nEndHr, &nEndMin, &cEndPeriod);
-	
-    	if (cEndPeriod == 'p' || cEndPeriod == 'P')
-	    {
-			if (nEndHr != 12)
-			{
-				nEndHr += 12;
-			}
+		
+		if (strcmp(cWord2, "pm") == 0 && nStartHr != 12)
+		{
+			nEndHr += 12;
+		}
+		else if (strcmp(cWord2, "am") == 0 && nStartHr == 12)
+		{
+			nEndHr = 0;
     	}
-    	else if (cEndPeriod == 'a' || cEndPeriod == 'A')
-    	{
-			if (nEndHr == 12)
-			{
-				nEndHr = 0;
-			}
-    	}
-    
+
 		nEndMin += nEndHr * 60;
-    	printf("\nAvailable show times from %s to %s:\n\n", pStartTime, pEndTime);
-   
+   		nCount = 0;
+
     	for (i = 0; i < MAX_CINEMAS; i++) 
     	{
 			for (j = 0; j < MAX_SHOWINGS; j++) 
@@ -634,31 +610,26 @@ searchTimeRange(char *pStartTime,
 				if (strlen(arrCinemas[i].arrShow[j].strShowTime) > 0) 
             	{
 					// Convert show time to minutes since midnight
-					sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %c", &nShowHr, &nShowMin, &cStartPeriod);
-				
-					if (cStartPeriod == 'p' || cStartPeriod == 'P')
-            		{
-						if (nShowHr != 12)
-			   			{
-							nShowHr += 12;
-						}
-            		}
-					else if (cStartPeriod == 'a' || cStartPeriod == 'A')
+					sscanf(arrCinemas[i].arrShow[j].strShowTime, "%d:%d %s", &nShowHr, &nShowMin, cWord);
+					
+					if (strcmp(cWord, "pm") == 0 && nShowHr != 12)
 					{
-						if (nShowHr == 12)
-						{
-							nShowHr = 0;
-			   			}
-            		}
+						nShowHr += 12;
+					}
+					else if (strcmp(cWord, "am") == 0 && nShowHr == 12)
+					{
+						nShowHr = 0;
+    				}
             
 					nShowMin += nShowHr * 60;
             
 					if (nShowMin >= nStartMin && nShowMin <= nEndMin) 
             		{
-						nValid = 1;
-						printf("Cinema %d: %s\n\n", arrCinemas[i].sMovie.nNumCinema, arrCinemas[i].sMovie.strTitle);
-               			printf("   Show Time: %s\n", arrCinemas[i].arrShow[j].strShowTime);
-               			printf("   Available Seats: %d\n\n", MAX_SEATS - arrCinemas[i].arrShow[j].nTakenSeats);
+            			arrValidShows[nCount].nCinemaIndex = i;
+            			arrValidShows[nCount].nShowIndex = j;
+            			arrValidShows[nCount].nTotalMins = nShowMin;
+            			nCount++;
+            			nValid = 1;
             		}
          		}
       		}		
@@ -666,10 +637,29 @@ searchTimeRange(char *pStartTime,
 		if (!nValid)
 		{
 			printf("   None! Please enter a new time range.\n");
-            printf("\nStart time: ");
-            scanf("%s", pStartTime);
-            printf("\nEnd time: ");
-            scanf("%s", pEndTime);
+		}
+		
+		for (i = 0; i < nCount - 1; i++)
+		{
+			for (j = i + 1; j < nCount; j++)
+			{
+				if (arrValidShows[i].nTotalMins > arrValidShows[j].nTotalMins)
+				{
+					temp = arrValidShows[i];
+					arrValidShows[i] = arrValidShows[j];
+					arrValidShows[j] = temp;
+				}
+			}
+		}
+		
+		for (i = 0; i < nCount; i++)
+		{
+			cinemaId = arrValidShows[i].nCinemaIndex; 
+			showId = arrValidShows[i].nShowIndex;
+			
+           	printf("Show Time: %s\n\n", arrCinemas[cinemaId].arrShow[showId].strShowTime);
+			printf("   Cinema %d: %s\n", arrCinemas[cinemaId].sMovie.nNumCinema, arrCinemas[cinemaId].sMovie.strTitle);
+            printf("   Available Seats: %d\n\n", MAX_SEATS - arrCinemas[cinemaId].arrShow[showId].nTakenSeats);
 		}
 	}
 }
@@ -716,9 +706,9 @@ saveExit(char *pFilename)
 
 int main() 
 {
-   int nChoice, nMovie;
+   int nChoice, nMovie, nValid = 0;
    string strFilename, strDate;
-   string strTitle, strStartTime, strEndTime;;
+   string strTitle;
    
    preLoadSched("MovieSched.txt");
    
@@ -739,7 +729,6 @@ int main()
       printf("5. Save and Exit\n");
       printf("\nEnter your choice: ");
       scanf("%d", &nChoice);
-      getchar(); // Consume newline left by scanf
       
       switch (nChoice) 
       {
@@ -753,26 +742,28 @@ int main()
             selectSeat(); // select seats
             break;
          case 4: 
-         	printf("\n1. Search movie by title\n");
-      		printf("2. Search Movie by time\n");
-         	printf("\nEnter your choice: ");
-      		scanf("%d", &nMovie);
-			switch (nMovie)
-			{
-				case 1:
-					searchTitle(strTitle); // search movie by title
-            		break;
-				case 2:
-					printf("\nEnter Start Time: ");
-	            	scanf(" %[^\n]s", strStartTime);
-	            	printf("\nEnter End Time: ");
-	            	scanf(" %[^\n]s", strEndTime);
-	            	searchTimeRange(strStartTime, strEndTime); // search movie by time range
-	            	break;
-	            default:
-	            	printf("\n");
+         	while (!nValid)
+         	{
+			    printf("\n1. Search movie by title\n");
+      			printf("2. Search Movie by time\n");
+         		printf("\nEnter your choice: ");
+      			scanf("%d", &nMovie);
+      			
+      			if (nMovie == 1) 
+                {
+                    searchTitle(strTitle);
+					nValid = 1; 
+                }
+                else if (nMovie == 2) 
+                {
+                    searchTimeRange(); 
+                    nValid = 1;
+                }
+                else 
+                {
+                    printf("\n");
             		printf("   Invalid choice! Please enter a valid number.\n");
-            		break;
+                }
 			}
             break;
          case 5:
