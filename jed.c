@@ -706,7 +706,7 @@ saveExit(char *pFilename)
 
 int main() 
 {
-   int nChoice, nMovie, nValid = 0;
+   int nChoice, nMovie, nValid;
    string strFilename, strDate;
    string strTitle;
    
@@ -742,6 +742,7 @@ int main()
             selectSeat(); // select seats
             break;
          case 4: 
+			nValid = 0;
          	while (!nValid)
          	{
 			    printf("\n1. Search movie by title\n");
