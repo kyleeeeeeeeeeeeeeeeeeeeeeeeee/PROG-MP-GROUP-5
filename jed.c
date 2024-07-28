@@ -615,27 +615,60 @@ searchTitle(char *pTitle)
 
 /*searchTimeRange searches for a specific show time, within the specified time range of the user, 
 across all cinemas and displays matching details.
-@param *pStartTime - pointer to a string containing the start time of the range.
-@param *pEndTime - pointer to a string containing the end time of the range.
 @return void - This function does not return a value.
 Pre-condition: arrCinemas must be properly initialized and populated with show time data.
 */
 void 
-searchTimeRange(char *pStartTime, 
-				char *pEndTime)
+searchTimeRange()
 {
 							
-	int i, j, cinemaId, showId;
+	int i, j, cinemaId, showId, nValidStart, nValidEnd;
     int nStartHr, nStartMin, nEndHr, nEndMin;
-    int nShowHr, nShowMin, nValid = 0, nCount = 0;
+    int nShowHr, nShowMin, nValidRange = 0, nCount = 0;
     char cWord[3], cWord2[3];
+    string strStartTime, strEndTime;
     struct sValidShowing arrValidShows[MAX_CINEMAS * MAX_SHOWINGS];
     struct sValidShowing temp;
     
-	while (!nValid)
-	{
-    	// Convert start and end times to minutes since midnight
-    	sscanf(pStartTime, "%d:%d %s", &nStartHr, &nStartMin, cWord);
+	while (!nValidRange)
+	{	
+		nValidStart = 0;
+		nValidEnd = 0;
+		do
+		{
+			printf("\nEnter Start Time (hh:mm am/pm): ");
+	    	scanf(" %[^\n]s", strStartTime);	
+    		sscanf(strStartTime, "%d:%d %s", &nStartHr, &nStartMin, cWord);
+    		
+    		if (nStartHr > 0 && nStartHr <= 12 && nStartMin >= 0 && nStartMin < 60 && (strcmp(cWord, "pm") == 0 || strcmp(cWord, "am") == 0))
+    		{
+    			nValidStart = 1;
+			}
+			if (!nValidStart)
+			{
+				printf("\n");
+				printf("   Invalid input! Please enter a valid time.\n");
+			}
+		
+		} while (!nValidStart);
+		
+		do
+		{
+			printf("\nEnter End Time (hh:mm am/pm): ");
+			scanf(" %[^\n]s", strEndTime);
+			sscanf(strEndTime, "%d:%d %s", &nEndHr, &nEndMin, cWord2);
+			
+			if (nEndHr > 0 && nEndHr <= 12 && nEndMin >= 0 && nEndMin < 60 && (strcmp(cWord2, "pm") == 0 || strcmp(cWord2, "am") == 0))
+			{
+				nValidEnd = 1;
+			}
+			if (!nValidEnd)
+			{
+				printf("\n");
+				printf("   Invalid input! Please enter a valid time.\n");
+			}
+			
+		} while (!nValidEnd);
 
 		if (strcmp(cWord, "pm") == 0 && nStartHr != 12)
 		{
@@ -647,7 +680,6 @@ searchTimeRange(char *pStartTime,
     	}
 
 		nStartMin += nStartHr * 60;
-    	sscanf(pEndTime, "%d:%d %s", &nEndHr, &nEndMin, cWord2);
 
 		if (strcmp(cWord2, "pm") == 0 && nEndHr != 12)
 	    {
@@ -659,7 +691,7 @@ searchTimeRange(char *pStartTime,
     	}
 
 		nEndMin += nEndHr * 60;
-    	printf("\nAvailable show times from %s to %s:\n\n", pStartTime, pEndTime);
+    	printf("\nAvailable show times from %s to %s:\n\n", strStartTime, strEndTime);
     	
     	for (i = 0; i < MAX_CINEMAS; i++) 
     	{
@@ -687,19 +719,11 @@ searchTimeRange(char *pStartTime,
             			arrValidShows[nCount].nShowIndex = j;
             			arrValidShows[nCount].nTotalMins = nShowMin;
             			nCount++;
-            			nValid = 1;
+            			nValidRange = 1;
             		}
          		}
       		}		
    		}
-		if (!nValid)
-		{
-			printf("   None! Please enter a new time range.\n");
-            printf("\nStart time (hh:mm am/pm): ");
-            scanf("%s", pStartTime);
-            printf("\nEnd time (hh:mm am/pm): ");
-            scanf("%s", pEndTime);
-		}
 
 		for (i = 0; i < nCount; i++)
 		{
@@ -722,6 +746,11 @@ searchTimeRange(char *pStartTime,
            	printf("Show Time: %s\n\n", arrCinemas[cinemaId].arrShow[showId].strShowTime);
 			printf("   Cinema %d: %s\n", arrCinemas[cinemaId].sMovie.nNumCinema, arrCinemas[cinemaId].sMovie.strTitle);
             printf("   Available Seats: %d\n\n", MAX_SEATS - arrCinemas[cinemaId].arrShow[showId].nTakenSeats);
+		}
+		
+		if (!nValidRange)
+		{
+			printf("   None! Please enter a new time range.\n");
 		}
 	}
 }
@@ -783,7 +812,7 @@ void saveExit(char *pFilename)
 int main() 
 {
    int nChoice, nMovie, nChoice2, nDay, nMth, nYr, nValidDate = 0;
-   string strFilename, strDate, strStartTime, strEndTime;
+   string strFilename, strDate;
    string strTitle;
    
    preLoadSched("MovieSched.txt");
@@ -799,7 +828,13 @@ int main()
    			nValidDate = 1;
    		}
    		
-   }  while (nValidDate == 0);
+   		if (!nValidDate)
+   		{
+   			printf("\n");
+   			printf("   Invalid input! Please enter valid date.\n");
+		}
+   		
+   }  while (!nValidDate);
    
    strcpy(strFilename, "show-");
    strcat(strFilename, strDate);
@@ -843,11 +878,7 @@ int main()
                 }
                 else if (nMovie == 2) 
                 {
-					printf("\nEnter Start Time (hh:mm am/pm): ");
-	            	scanf(" %[^\n]s", strStartTime);
-	            	printf("\nEnter End Time (hh:mm am/pm): ");
-	            	scanf(" %[^\n]s", strEndTime);
-	            	searchTimeRange(strStartTime, strEndTime); // search movie by time range
+	            	searchTimeRange();
                     nChoice2 = 1;
                 }
                 else 
